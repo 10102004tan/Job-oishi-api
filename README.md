@@ -18,6 +18,9 @@
             <li>List cmd for docker-compose mysql : 
                 <ul>
                        <li>Migrate : docker-compose exec app php artisan migrate</li>
+                        <li>SHOW DATABASES; </li>
+                    <li>USE joboishi;</li>
+                    <li>SELECT * FROM table_name;</li>
                 </ul>
             </li>
         </ul>
