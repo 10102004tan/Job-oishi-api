@@ -2,6 +2,8 @@ version: '3.7'
 services:
   app:
     image: 10102004tan/job-oishi-api:latest
+    volumes:
+      - ./:/usr/src/job-oishi-api
     ports:
       - "${APP_PORT}:3000"
     depends_on:
