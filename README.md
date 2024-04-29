@@ -4,11 +4,25 @@
     <li>Turn on docker on desktop</li>
     <li>
         <div>
-            docker run -d --restart=always --name=api -p [port]:3000 -v "$(PWD):/usr/src/job-oishi-api"  10102004tan/job-oishi-api
+            docker-compose up -d
         </div>
     </li>
     =
     <li>
-        Host : http://localhost:8080/
+        Host : http://localhost:3001/
+    </li>
+    <li>
+    How to asset to mysql 
+        <ul>
+            <li>Open termial and run : docker-compose exec mysqldb mysql -u root -p</li>
+            <li>List cmd for docker-compose mysql : 
+                <ul>
+                       <li>Migrate : docker-compose exec app php artisan migrate</li>
+                        <li>SHOW DATABASES; </li>
+                    <li>USE joboishi;</li>
+                    <li>SELECT * FROM table_name;</li>
+                </ul>
+            </li>
+        </ul>
     </li>
 </ul>
