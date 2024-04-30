@@ -56,6 +56,7 @@ class DetailJobAPIController extends Controller
         $data["experience"] = $dataAPI->experiences_str;
         $data["is_edit"] = 0;
         $data["is_salary_value"] = $dataAPI->is_salary_visible;
+        $data["is_salary_value"] = $dataAPI->salary->value . " ". $dataAPI->salary->currency . " / " . $dataAPI->salary->unit ;
         $data["job_level"] = $dataAPI->job_levels_str;
         $data["is_applied"] = $dataAPI->is_applied;
         // dd($dataAPI->skills_arr);
