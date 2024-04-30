@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  app:
+    container_name: laravel
+    image: 10102004tan/job-oishi-api:latest
+    volumes:
+      - ./:/usr/src/job-oishi-api
+    ports:
+      - "${APP_PORT}:3000"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    environment:
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+      - DB_USERNAME
+      - DB_PASSWORD
+    networks:
+      - laravel-mysql-network
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - laravel-mysql-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      retries: 10
+      interval: 3s
+      timeout: 30s
+volumes:
+  mysql-data:
+networks:
+  laravel-mysql-network:
+    name: laravel-mysql-network
