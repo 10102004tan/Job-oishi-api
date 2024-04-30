@@ -38,6 +38,12 @@
                         Companies
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('benifits.index') }}" class="nav-link {{ request()->is('benifits*') ? 'active' : '' }}" aria-current="page">
+                        <i class="bi bi-basket2"></i>
+                        Benifits
+                    </a>
+                </li>
 
             </ul>
             <hr>

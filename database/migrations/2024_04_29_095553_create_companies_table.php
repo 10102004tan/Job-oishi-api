@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->text('company_name');
-            $table->string('company_image');
-            $table->longText('description');
-            $table->string('website');
-            $table->text('tagline');
-            $table->integer('company_size');
-            $table->string('address_region_id');
-            $table->integer('number_job_opening');
-            $table->string('benifits_id');
-            $table->string('nationallity_id');
-            $table->timestamp('created_at')->useCurrent();
+            $table->text('company_name')->nullable();
+            $table->string('company_logo')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('website')->nullable();
+            $table->text('tagline')->nullable();
+            $table->integer('company_size')->nullable();
+            $table->string('address_region_id')->nullable();
+            $table->integer('number_job_opening')->nullable();
+            $table->string('benifits_id')->nullable();
+            $table->string('nationallity_id')->nullable();
+            $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
     }

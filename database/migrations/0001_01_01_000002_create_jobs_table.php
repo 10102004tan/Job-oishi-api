@@ -13,17 +13,20 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('title');
-            $table->longText('content');
-            $table->integer('company_id');
-            $table->integer('experience');
-            $table->integer('job_type_str');
-            $table->boolean('is_edit');
-            $table->integer('job_level');
-            $table->boolean('is_salary_value');
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('title')->nullable();
+            $table->longText('content')->nullable();
+            $table->longText('requirements')->nullable();
+            $table->longText('responsibilities')->nullable();
+            $table->integer('company_id')->nullable();
+            $table->string('experience')->nullable();
+            $table->string('job_type_str')->nullable();
+            $table->boolean('is_edit')->default(false);
+            $table->integer('job_level')->nullable();
+            $table->boolean('is_salary_visible')->default(false);
+            $table->string('salary_value')->nullable();
+            $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-            $table->integer('is_applied');
+            $table->boolean('is_applied')->default(false);
         });
 
         // Schema::create('job_batches', function (Blueprint $table) {

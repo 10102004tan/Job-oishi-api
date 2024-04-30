@@ -58,14 +58,17 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="mb-3">
-            <label for="benifits_id" class="form-label">Benifits ID</label>
-            <input type="text" class="form-control" id="benifits_id" name="benifits_id">
-            @error('benifits_id')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+
+        <label class="form-label">Phúc lợi:</label>
+        @foreach($benifits as $benifit)
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="{{ $benifit->id }}" name="benifits[]" id="benifit-{{ $benifit->id }}">
+            <label class="form-check-label" for="benifit-{{ $benifit->id }}">
+                {{ $benifit->benifit_name }}
+            </label>
         </div>
-        
+        @endforeach
+
         <div class="mb-3">
             <label for="nationallity_id" class="form-label">Nationallity ID</label>
             <input type="text" class="form-control" id="nationallity_id" name="nationallity_id">

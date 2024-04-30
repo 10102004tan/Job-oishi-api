@@ -47,10 +47,9 @@ class JobController extends Controller
         $job->is_salary_value = $request['is_salary_value'];
         $job->is_applied = $request['is_applied'];
         $job->save();
-        
+
         return redirect()->route('jobs.index')
             ->with('success', 'Thêm nghề nghiệp mới thành công!');
-            
     }
 
     /**
@@ -58,7 +57,8 @@ class JobController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $job = Job::find($id);
+        return $job;
     }
 
     /**
@@ -91,7 +91,7 @@ class JobController extends Controller
         $job->is_salary_value = $request['is_salary_value'];
         $job->is_applied = $request['is_applied'];
         $job->save();
-        
+
         return redirect()->route('jobs.index')
             ->with('success', 'Cập nhật thành công!');
     }

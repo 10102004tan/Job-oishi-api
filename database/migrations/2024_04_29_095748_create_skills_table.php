@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skill', function (Blueprint $table) {
-            $table->id();
+        Schema::create('skills', function (Blueprint $table) {
+            $table->id()->autoIncrement();
             $table->timestamps();
         });
     }

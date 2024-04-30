@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->longText('url');
+            $table->longText('url')->nullable();
         });
     }
 
