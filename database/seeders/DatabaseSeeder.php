@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
             'company_size' => "10-24",
-            'address_region_id' => '1',
+            // 'address_region_id' => '1',
             'num_job_openings' => 3,
             'nationality_id' => '10'
 
@@ -76,7 +76,7 @@ class DatabaseSeeder extends Seeder
             'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
             'company_size' => '10-24',
-            'address_region_id' => '1',
+            // 'address_region_id' => '1',
             'num_job_openings' => 3,
             'nationality_id' => '10'
 
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
             'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
             'company_size' => '10-24',
-            'address_region_id' => '1',
+            // 'address_region_id' => '1',
             'num_job_openings' => 3,
             'nationality_id' => '10',
 
@@ -118,6 +118,49 @@ class DatabaseSeeder extends Seeder
             'value' => 'Các khóa đào tạo nội bộ về Kỹ thuật & Kỹ năng mềm',
             'icon' => 'fa-book',
 
+        ]);
+
+        DB::table('addresses')->insert([
+            'company_id' => 1,
+            'address' => '53 Võ Văn Ngân, TP. Thủ Đức, TP. Hồ Chí Minh',
+            // 'district' => 'TP. Thủ Đức',
+            // 'province' => 'TP. Hồ Chí Minh'
+
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 1,
+            'benefit_id' => 1
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 1,
+            'benefit_id' => 2
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 2,
+            'benefit_id' => 2
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 3,
+            'benefit_id' => 1
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 3,
+            'benefit_id' => 2
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 3,
+            'benefit_id' => 3
+        ]);
+
+        DB::table('benefit_company')->insert([
+            'company_id' => 3,
+            'benefit_id' => 4
         ]);
        
     }

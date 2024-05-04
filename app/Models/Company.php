@@ -12,10 +12,12 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'display_name',
-    'description',
-    'image_logo',
-    'website' ];
+    protected $fillable = [ 
+        'display_name',
+        'description',
+        'image_logo',
+        'website' 
+     ];
 
     public function jobs() : HasMany {
         return $this->hasMany(Job::class);
@@ -23,5 +25,9 @@ class Company extends Model
 
     public function benefits() : BelongsToMany {
         return $this->belongsToMany(Benefit::class);
+    }
+
+    public function address() : HasMany {
+        return $this->hasMany(Address::class);
     }
 }

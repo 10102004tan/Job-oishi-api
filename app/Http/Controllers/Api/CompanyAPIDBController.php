@@ -15,9 +15,9 @@ class CompanyAPIDBController extends Controller
      */
     public function index()
     {
-        $companies = Company::with('benefits')->get();
+        $companies = Company::with('benefits', 'address')->get();
         // $companies = Company::all();
-
+       
         return $companies;
     }
 
@@ -47,7 +47,7 @@ class CompanyAPIDBController extends Controller
 
     public function getDetail(string $id)
     {
-        $company = Company::with('benefits')->find($id);
+        $company = Company::with('benefits', 'address')->find($id);
         if (!$company) {
             return response()->json(['error' => 'Company not found'], 404);
         }

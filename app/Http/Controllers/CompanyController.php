@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Benefit;
 use App\Models\Company;
+use App\Models\Address;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -30,42 +31,47 @@ class CompanyController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+{
+    dd($request->all());
+    // Validate the request data
+    $validated = $request->validate([
+        'display_name' => 'required|max:255',
+        'description' => 'required',
+        'image_logo' => 'required|url',
+        'website' => 'required|url',
+        'tagline' => 'nullable|string',
+        'company_size' => 'nullable|string',
+        'num_job_openings' => 'nullable|integer',
+        'nationality_id' => 'nullable|integer',
+        'benefits' => 'nullable|array',
+        'addresses.*.line_1' => 'required|string',
+        'addresses.*.line_2' => 'nullable|string',
+        // Add validation rules for other address fields if needed
+    ]);
 
-        // dd($request);
-        // Validate the request data
-        $validated = $request->validate([
-            'display_name' => 'required|max:255',
-            'description' => 'required',
-            'image_logo' => 'required|url',
-            'website' => 'required|url',
-            'tagline' => 'nullable|string',
-            'company_size' => 'nullable|string',
-            'address_region_id' => 'nullable|integer',
-            'num_job_openings' => 'nullable|integer',
-            'nationality_id' => 'nullable|integer',
-            'benifits' => 'nullable|array', 
-        ]);
+    // Create a new Company instance and fill its attributes
+    $company = new Company();
+    $company->fill($validated);
+    $company->save();
 
-        $company = new Company();
-
-        // Fill the company attributes
-        $company->company_name = $validated['display_name'];
-        $company->description = $validated['description'];
-        $company->company_logo = $validated['image_logo'];
-        $company->website = $validated['website'];
-        $company->tagline = $validated['tagline'];
-        $company->company_size = $validated['company_size'];
-        $company->address_region_id = $validated['address_region_id'];
-        $company->number_job_opening = $validated['num_job_openings'];
-        $company->nationallity_id = $validated['nationality_id'];
-
-        $company->save();
+    // Attach benefits to the company
+    if (isset($validated['benefits'])) {
         $company->benefits()->attach($validated['benefits']);
-
-        return redirect()->route('companies.index')
-            ->with('success', 'Thêm công ty, doanh nghiệp mới thành công!');
     }
+
+    // Add Addresses
+    if ($request->has('addresses')) {
+        foreach ($validated['addresses'] as $addressData) {
+            $address = new Address();
+            $address->fill($addressData);
+            $address->company_id = $company->id;
+            $address->save();
+        }
+    }
+
+    return redirect()->route('companies.index')
+        ->with('success', 'Thêm công ty, doanh nghiệp mới thành công!');
+}
 
 
     /**

@@ -16,4 +16,8 @@ class Benefit extends Model
     public function companies() : BelongsToMany {
         return $this->belongsToMany(Company::class);
     }
+
+    public function jobs() : BelongsToMany {
+        return $this->belongsToMany(Job::class);
+    }
 }

@@ -1,6 +1,6 @@
 <x-layout>
     <h1>Create Infomation Company</h1>
-    <form action="{{ route('companies.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('companies.store') }}" method="post">
         @csrf
         <div class="mb-3">
             <label for="company_name" class="form-label">Company Name</label>
@@ -44,13 +44,7 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <div class="mb-3">
-            <label for="address_region_id" class="form-label">Address Region ID</label>
-            <input type="text" class="form-control" id="address_region_id" name="address_region_id">
-            @error('address_region_id')
-            <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-        </div>
+       
         <div class="mb-3">
             <label for="num_job_openings" class="form-label">Number Job Openings</label>
             <input type="text" class="form-control" id="num_job_openings" name="num_job_openings">
@@ -77,6 +71,15 @@
             @enderror
         </div>
 
+        <span class="btn btn-primary btn-add">Add</span>
+        <div class="address">
+            <div class="mb-3">
+                <label for="address_street" class="form-label">Address Street</label>
+                <input type="text" class="form-control" id="address_id" name="addresses[]">
+            </div>
+           
+        </div>
+        
         <button type="submit" class="btn btn-primary">Save</button>
     </form>
 </x-layout>
