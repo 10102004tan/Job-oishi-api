@@ -10,6 +10,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+
 Route::get('company/job', [CompanyApiController::class, "getJob"]);
 Route::get('company/{id}', [CompanyApiController::class, "show"]);
 Route::get('/test', [TestController::class, 'handleAPI']);
