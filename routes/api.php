@@ -12,5 +12,5 @@ Route::get('/user', function (Request $request) {
 
 Route::get('company/job', [CompanyApiController::class, "getJob"]);
 Route::get('company/{id}', [CompanyApiController::class, "show"]);
-Route::get('/job/{id}', [DetailJobAPIController::class, "show"]);
+Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
 Route::get('/test', [TestController::class, 'handleAPI']);
