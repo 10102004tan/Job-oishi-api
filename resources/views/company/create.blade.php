@@ -10,9 +10,9 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="company_image" class="form-label">Company Photo</label>
-            <textarea class="form-control" id="company_image" name="company_image"></textarea>
-            @error('company_image')
+            <label for="company_photo" class="form-label">Company Photo</label>
+            <textarea class="form-control" id="company_photo" name="company_photo"></textarea>
+            @error('company_photo')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -52,27 +52,27 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="number_job_opening" class="form-label">Number Job Openings</label>
-            <input type="text" class="form-control" id="number_job_opening" name="number_job_opening">
-            @error('number_job_opening')
+            <label for="num_job_openings" class="form-label">Number Job Openings</label>
+            <input type="text" class="form-control" id="num_job_openings" name="num_job_openings">
+            @error('num_job_openings')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
 
         <label class="form-label">Phúc lợi:</label>
-        @foreach($benifits as $benifit)
+        @foreach($benefits as $benefit)
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="{{ $benifit->id }}" name="benifits[]" id="benifit-{{ $benifit->id }}">
-            <label class="form-check-label" for="benifit-{{ $benifit->id }}">
-                {{ $benifit->benifit_name }}
+            <input class="form-check-input" type="checkbox" value="{{ $benefit->id }}" name="benefits[]" id="benefit-{{ $benefit->id }}">
+            <label class="form-check-label" for="benefit-{{ $benefit->id }}">
+                {{ $benefit->value }}
             </label>
         </div>
         @endforeach
 
         <div class="mb-3">
-            <label for="nationallity_id" class="form-label">Nationallity ID</label>
-            <input type="text" class="form-control" id="nationallity_id" name="nationallity_id">
-            @error('nationallity_id')
+            <label for="nationality_id" class="form-label">Nationality ID</label>
+            <input type="text" class="form-control" id="nationality_id" name="nationality_id">
+            @error('nationality_id')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>

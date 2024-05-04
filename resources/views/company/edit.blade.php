@@ -4,16 +4,16 @@
         @csrf
         @method('PUT')
         <div class="mb-3">
-            <label for="company_name" class="form-label">Company Name</label>
-            <input type="text" class="form-control" id="company_name" name="company_name" value="{{ $company->company_name }}">
-            @error('company_name')
+            <label for="display_name" class="form-label">Company Name</label>
+            <input type="text" class="form-control" id="display_name" name="display_name" value="{{ $company->display_name }}">
+            @error('display_name')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="mb-3">
-            <label for="company_image" class="form-label">Company Photo</label>
-            <textarea class="form-control" id="company_image" name="company_image">{{ $company->company_image }}</textarea>
-            @error('company_image')
+            <label for="image_logo" class="form-label">Company Photo</label>
+            <textarea class="form-control" id="image_logo" name="image_logo">{{ $company->image_logo }}</textarea>
+            @error('image_logo')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
@@ -53,26 +53,26 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="number_job_opening" class="form-label">Number Job Openings</label>
-            <input type="text" class="form-control" id="number_job_opening" name="number_job_opening" value="{{ $company->number_job_opening }}">
-            @error('number_job_opening')
+            <label for="num_job_openings" class="form-label">Number Job Openings</label>
+            <input type="text" class="form-control" id="num_job_openings" name="num_job_openings" value="{{ $company->num_job_openings }}">
+            @error('num_job_openings')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <label class="form-label">Phúc lợi:</label>
-        @foreach($benifits as $benifit)
+        @foreach($benefits as $benefit)
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="{{ $benifit->id }}" name="benifits[]" id="benifits_{{ $benifit->id }}" @if($company->benifits->contains($benifit->id)) checked @endif>
-            <label class="form-check-label" for="benifits_{{ $benifit->id }}">
-                {{ $benifit->benifit_name }}
+            <input class="form-check-input" type="checkbox" value="{{ $benefit->id }}" name="benefits[]" id="benefits_{{ $benefit->id }}" @if($company->benefits->contains($benefit->id)) checked @endif>
+            <label class="form-check-label" for="benefits_{{ $benefit->id }}">
+                {{ $benefit->value }}
             </label>
         </div>
         @endforeach
 
         <div class="mb-3">
-            <label for="nationallity_id" class="form-label">Nationallity ID</label>
-            <input type="text" class="form-control" id="nationallity_id" name="nationallity_id" value="{{ $company->nationallity_id }}">
-            @error('nationallity_id')
+            <label for="nationality_id" class="form-label">Nationallity ID</label>
+            <input type="text" class="form-control" id="nationality_id" name="nationality_id" value="{{ $company->nationality_id }}">
+            @error('nationality_id')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>

@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->integer('company_id')->nullable();
-            $table->text('street')->nullable();
-            $table->text('district')->nullable();
-            $table->text('province')->nullable();
-            $table->timestamp('created_at')->useCurrent()->nullable();
+        Schema::create('benefit_job', function (Blueprint $table) {
+            $table->integer('job_id');
+            $table->integer('benefit_id');
+            $table->primary(['job_id', 'benefit_id']);
+            $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-            
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('benefit_job');
     }
 };

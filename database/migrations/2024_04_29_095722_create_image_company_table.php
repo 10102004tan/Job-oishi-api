@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('image_company', function (Blueprint $table) {
-            $table->integer('image_id');
-            $table->integer('company_id');
-            $table->primary(['image_id', 'company_id']);
+            $table->id()->autoIncrement();
+            $table->text('url')->nullable();
+            $table->integer('company_id')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });

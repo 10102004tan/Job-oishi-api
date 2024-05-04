@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('nationalities', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->longText('url')->nullable();
+            $table->string('national')->nullable();
+            $table->string('flag')->nullable();
+            $table->integer('company_id');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
     }
 
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('nationalities');
     }
 };

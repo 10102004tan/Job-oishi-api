@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->integer('company_id')->nullable();
-            $table->text('street')->nullable();
-            $table->text('district')->nullable();
-            $table->text('province')->nullable();
-            $table->timestamp('created_at')->useCurrent()->nullable();
+        Schema::create('skill_job', function (Blueprint $table) {
+            $table->integer('skill_id');
+            $table->integer('job_id');
+            $table->primary(['skill_id', 'job_id']);
+            $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
-            
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address');
+        Schema::dropIfExists('skill_job');
     }
 };

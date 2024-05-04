@@ -11,7 +11,7 @@
             <tr>
                 <th>ID</th>
                 <th>Company Name</th>
-                <th>Company Photo</th>
+                <th>Logo</th>
                 <th>Description</th>
                 <th>Action</th>
             </tr>
@@ -20,9 +20,9 @@
             @foreach($companies as $company)
             <tr>
                 <td>{{ $company->id }}</td>
-                <td>{{ $company->company_name }}</td>
-                <td>{{ $company->company_image }}</td>
-                <td>{{ $company->description }}</td>
+                <td>{{ $company->display_name }}</td>
+                <td><img src="{{ $company->image_logo }}" alt="" class="img-fluid" width="100px"></td>
+                <td>{!! $company->description !!}</td>
                 <td>
                     <a href="{{ route('companies.edit', $company->id) }}"><i class="bi bi-pencil-square"></i></a>
                     <form action="{{ route('companies.destroy', $company->id) }}" class="d-inline" method="post" onsubmit="return confirm('Xóa không?')">

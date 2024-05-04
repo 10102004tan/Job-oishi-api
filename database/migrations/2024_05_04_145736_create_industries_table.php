@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('benifit_company', function (Blueprint $table) {
-            $table->integer('company_id');
-            $table->integer('benifit_id');
-            $table->primary(['company_id', 'benifit_id']);
+        Schema::create('industries', function (Blueprint $table) {
+            $table->id();
+            $table->text('industry_name')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('company_benifit');
+        Schema::dropIfExists('industries');
     }
 };

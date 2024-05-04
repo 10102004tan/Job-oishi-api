@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Benifit;
+use App\Models\Benefit;
 use App\Models\Company;
 use Illuminate\Http\Request;
 
@@ -23,7 +23,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.create', ['benifits' => Benifit::all()]);
+        return view('company.create', ['benefits' => Benefit::all()]);
     }
 
     /**
@@ -35,33 +35,33 @@ class CompanyController extends Controller
         // dd($request);
         // Validate the request data
         $validated = $request->validate([
-            'company_name' => 'required|max:255',
+            'display_name' => 'required|max:255',
             'description' => 'required',
-            'company_image' => 'required|url',
+            'image_logo' => 'required|url',
             'website' => 'required|url',
             'tagline' => 'nullable|string',
             'company_size' => 'nullable|string',
             'address_region_id' => 'nullable|integer',
-            'number_job_opening' => 'nullable|integer',
-            'nationallity_id' => 'nullable|integer',
+            'num_job_openings' => 'nullable|integer',
+            'nationality_id' => 'nullable|integer',
             'benifits' => 'nullable|array', 
         ]);
 
         $company = new Company();
 
         // Fill the company attributes
-        $company->company_name = $validated['company_name'];
+        $company->company_name = $validated['display_name'];
         $company->description = $validated['description'];
-        $company->company_image = $validated['company_image'];
+        $company->company_logo = $validated['image_logo'];
         $company->website = $validated['website'];
         $company->tagline = $validated['tagline'];
         $company->company_size = $validated['company_size'];
         $company->address_region_id = $validated['address_region_id'];
-        $company->number_job_opening = $validated['number_job_opening'];
-        $company->nationallity_id = $validated['nationallity_id'];
+        $company->number_job_opening = $validated['num_job_openings'];
+        $company->nationallity_id = $validated['nationality_id'];
 
         $company->save();
-        $company->benifits()->attach($validated['benifits']);
+        $company->benefits()->attach($validated['benefits']);
 
         return redirect()->route('companies.index')
             ->with('success', 'Thêm công ty, doanh nghiệp mới thành công!');
@@ -80,7 +80,7 @@ class CompanyController extends Controller
      */
     public function edit(string $id)
     {
-        return view('company.edit', ['company' => Company::find($id), 'benifits' => Benifit::all()]);
+        return view('company.edit', ['company' => Company::find($id), 'benefits' => Benefit::all()]);
     }
 
     /**
@@ -90,9 +90,9 @@ class CompanyController extends Controller
     {
         // dd($request);
         $validated = $request->validate([
-            'company_name' => 'required|max:255',
+            'display_name' => 'required|max:255',
             'description' => 'required',
-            'company_image' => 'required',
+            'image_logo' => 'required',
             'website' => 'required'
         ]);
 
@@ -101,9 +101,9 @@ class CompanyController extends Controller
         $company->tagline = $request['tagline'];
         $company->company_size = $request['company_size'];
         $company->address_region_id = $request['address_region_id'];
-        $company->number_job_opening = $request['number_job_opening'];
-        $company->nationallity_id = $request['nationallity_id'];
-        $company->benifits()->sync($request->benifits);
+        $company->num_job_openings = $request['num_job_openings'];
+        $company->nationality_id = $request['nationality_id'];
+        $company->benefits()->sync($request->benefits);
         $company->save();
 
         return redirect()->route('companies.index')
@@ -115,7 +115,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        $company->benifits()->detach();
+        $company->benefits()->detach();
         $company->delete();
 
         return redirect()->route('companies.index')

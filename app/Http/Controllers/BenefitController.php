@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Benifit;
+use App\Models\Benefit;
 use Illuminate\Http\Request;
 
-class BenifitController extends Controller
+class BenefitController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $benifits = Benifit::all();
+        $benefits = Benefit::all();
 
-        return view('benifit.index', ['benifits' => $benifits]);
+        return view('benefit.index', ['benefits' => $benefits]);
     }
 
     /**
@@ -22,7 +22,7 @@ class BenifitController extends Controller
      */
     public function create()
     {
-        return view('benifit.create');
+        return view('benefit.create');
     }
 
     /**
@@ -31,15 +31,15 @@ class BenifitController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'benifit_name' => 'required',
-            'benifit_icon' => 'required',
+            'value' => 'required',
+            'icon' => 'required',
         ]);
 
-        $benifit = new Benifit();
-        $benifit->fill($validated);
-        $benifit->save();
+        $benefit = new Benefit();
+        $benefit->fill($validated);
+        $benefit->save();
 
-        return redirect()->route('benifits.index')
+        return redirect()->route('benefits.index')
             ->with('success', 'Thêm phúc lợi mới thành công!');
     }
 
@@ -56,8 +56,8 @@ class BenifitController extends Controller
      */
     public function edit(string $id)
     {
-        $benifit = Benifit::find($id);
-        return view('benifit.edit', ['benifit' => $benifit]);
+        $benefit = Benefit::find($id);
+        return view('benefit.edit', ['benefit' => $benefit]);
     }
 
     /**
@@ -66,26 +66,26 @@ class BenifitController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'benifit_name' => 'required',
-            'benifit_icon' => 'required',
+            'value' => 'required',
+            'icon' => 'required',
         ]);
 
-        $benifit = Benifit::find($id);
-        $benifit->fill($validated);
-        $benifit->save();
+        $benefit = Benefit::find($id);
+        $benefit->fill($validated);
+        $benefit->save();
 
-        return redirect()->route('benifits.index')
+        return redirect()->route('benefits.index')
             ->with('success', 'Cập nhật thông tin phúc lợi thành công!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Benifit $benifit)
+    public function destroy(Benefit $benefit)
     {
-        $benifit->delete();
+        $benefit->delete();
 
-        return redirect()->route('benifits.index')
+        return redirect()->route('benefits.index')
             ->with('success', 'Xóa thành công!');
     }
 }

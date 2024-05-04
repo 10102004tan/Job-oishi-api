@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Benifit;
+use App\Models\Benefit;
 
-class BenifitAPIDBController extends Controller
+class BenefitAPIDBController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $benifits = Benifit::all();
-        return $benifits;
+        $benefits = Benefit::all();
+        return $benefits;
     }
 
     /**

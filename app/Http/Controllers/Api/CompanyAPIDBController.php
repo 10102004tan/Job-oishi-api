@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
-use App\Models\Benifit;
+use App\Models\Benefit;
 
 
 class CompanyAPIDBController extends Controller
@@ -15,8 +15,9 @@ class CompanyAPIDBController extends Controller
      */
     public function index()
     {
-        $companies = Company::with('benifits')->get()->makeHidden(['benifit_id']);
-       
+        $companies = Company::with('benefits')->get();
+        // $companies = Company::all();
+
         return $companies;
     }
 
@@ -46,12 +47,12 @@ class CompanyAPIDBController extends Controller
 
     public function getDetail(string $id)
     {
-        $company = Company::with('benifits')->find($id);
+        $company = Company::with('benefits')->find($id);
         if (!$company) {
             return response()->json(['error' => 'Company not found'], 404);
         }
 
-        $company->makeHidden(['benifit_id']);
+        $company->makeHidden(['benefit_id']);
 
         return response()->json($company);
     }

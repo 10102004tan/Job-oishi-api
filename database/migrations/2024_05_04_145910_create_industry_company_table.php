@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('image_job', function (Blueprint $table) {
-            $table->integer('image_id');
-            $table->integer('job_id');
-            $table->primary(['image_id', 'job_id']);
+        Schema::create('industry_company', function (Blueprint $table) {
+            $table->integer('industry_id');
+            $table->integer('company_id');
+            $table->primary(['industry_id', 'company_id']);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('image_job');
+        Schema::dropIfExists('industry_company');
     }
 };

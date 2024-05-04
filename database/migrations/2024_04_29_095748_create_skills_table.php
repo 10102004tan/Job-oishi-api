@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id()->autoIncrement();
+            $table->string('skill_name')->nullable();
             $table->timestamps();
         });
     }

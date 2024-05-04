@@ -57,68 +57,66 @@ class DatabaseSeeder extends Seeder
         ]);
         
         DB::table('companies')->insert([
-            'company_name' => 'Công ty 1',
-            'company_logo' => 'logo-1.png',
-            'description' => 'Mô tả công ty 1',
-            'tagline' => 'Cùng nhau phát triển',
+            'display_name' => 'GEO SYSTEM SOLUTIONS VIETNAM',
+            'image_logo' => 'https://assets.topdev.vn/images/2024/04/09/TopDev-b5af9c126cd5f9f13df813192f5a66e6-1712625847.png',
+            'description' => '<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">Our Parent Company: GEO HOLDINGS COPORATION (100% Japanese company)&nbsp; </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">About Us: GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. 100% Japanese company Development of internal systems used by GEO Group Contribute in all phases of software development lifecycle.</span></p>',
+            'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
-            'company_size' => 3,
+            'company_size' => "10-24",
             'address_region_id' => '1',
-            'benifits_id' => 1,
-            'number_job_opening' => 3,
-            'nationallity_id' => '10'
+            'num_job_openings' => 3,
+            'nationality_id' => '10'
 
             
         ]);
         DB::table('companies')->insert([
-            'company_name' => 'Công ty 2',
-            'company_logo' => 'logo-2.png',
-            'description' => 'Mô tả công ty 2',
-            'tagline' => 'Cùng nhau phát triển',
+            'display_name' => 'GEO SYSTEM SOLUTIONS VIETNAM',
+            'image_logo' => 'https://assets.topdev.vn/images/2024/04/09/TopDev-b5af9c126cd5f9f13df813192f5a66e6-1712625847.png',
+            'description' => '<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">Our Parent Company: GEO HOLDINGS COPORATION (100% Japanese company)&nbsp; </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">About Us: GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. 100% Japanese company Development of internal systems used by GEO Group Contribute in all phases of software development lifecycle.</span></p>',
+            'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
-            'company_size' => 3,
+            'company_size' => '10-24',
             'address_region_id' => '1',
-            'benifits_id' => 1,
-            'number_job_opening' => 3,
-            'nationallity_id' => '10'
+            'num_job_openings' => 3,
+            'nationality_id' => '10'
 
 
         ]);
         DB::table('companies')->insert([
-            'company_name' => 'Công ty 3',
-            'company_logo' => 'logo-3.png',
-            'description' => 'Mô tả công ty 3',
-            'tagline' => 'Cùng nhau phát triển',
+            'display_name' => 'GEO SYSTEM SOLUTIONS VIETNAM',
+            'image_logo' => 'https://assets.topdev.vn/images/2024/04/09/TopDev-b5af9c126cd5f9f13df813192f5a66e6-1712625847.png',
+            'description' => '<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">Our Parent Company: GEO HOLDINGS COPORATION (100% Japanese company)&nbsp; </span></p>\r\n<p style=\"text-align: justify;\"><span style=\"font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; font-size: 15px;\">About Us: GEO SYSTEM SOLUTIONS VIETNAM CO., LTD. 100% Japanese company Development of internal systems used by GEO Group Contribute in all phases of software development lifecycle.</span></p>',
+            'tagline' => 'CHANGE as CHANCE',
             'website' => 'a.com',
-            'company_size' => 3,
+            'company_size' => '10-24',
             'address_region_id' => '1',
-            'benifits_id' => 1,
-            'number_job_opening' => 3,
-            'nationallity_id' => '10',
+            'num_job_openings' => 3,
+            'nationality_id' => '10',
+
+        ]);
+        
+
+        DB::table('benefits')->insert([
+            'value' => 'Mức lương và thưởng cạnh tranh.',
+            'icon' => 'fa-money',
 
         ]);
 
-        DB::table('benifits')->insert([
-            'benifit_name' => 'Lợi ích 1',
-            'benifit_icon' => 'icon-1',
+        DB::table('benefits')->insert([
+            'value' => 'Làm việc trong môi trường quốc tế, năng động, chuyên nghiệp, có nhiều cơ hội để phát triển nghề nghiệp.',
+            'icon' => 'fa-globe',
 
         ]);
 
-        DB::table('benifits')->insert([
-            'benifit_name' => 'Lợi ích 2',
-            'benifit_icon' => 'icon-1',
+        DB::table('benefits')->insert([
+            'value' => 'Công ty hỗ trợ toàn bộ chi phí Visa',
+            'icon' => 'fa-diamond',
 
         ]);
 
-        DB::table('benifits')->insert([
-            'benifit_name' => 'Lợi ích 3',
-            'benifit_icon' => 'icon-1',
-
-        ]);
-
-        DB::table('benifits')->insert([
-            'benifit_name' => 'Lợi ích 4',
-            'benifit_icon' => 'icon-1',
+        DB::table('benefits')->insert([
+            'value' => 'Các khóa đào tạo nội bộ về Kỹ thuật & Kỹ năng mềm',
+            'icon' => 'fa-book',
 
         ]);
        
