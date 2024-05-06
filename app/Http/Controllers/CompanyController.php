@@ -32,7 +32,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
 {
-    dd($request->all());
+    // dd($request->all());
     // Validate the request data
     $validated = $request->validate([
         'display_name' => 'required|max:255',
@@ -62,6 +62,7 @@ class CompanyController extends Controller
     // Add Addresses
     if ($request->has('addresses')) {
         foreach ($validated['addresses'] as $addressData) {
+            dd($addressData);
             $address = new Address();
             $address->fill($addressData);
             $address->company_id = $company->id;
