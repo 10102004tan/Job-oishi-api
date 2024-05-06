@@ -12,37 +12,48 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->unsignedTinyInteger('attempts');
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
+            $table->id()->autoIncrement();
+            $table->string('title')->nullable();
+            $table->longText('content')->nullable();
+            $table->integer('company_id')->nullable();
+            $table->string('skills')->nullable();
+            $table->string('experience')->nullable();
+            $table->longText('requirements')->nullable();
+            $table->longText('responsibilities')->nullable();
+            $table->string('job_type_str')->nullable();
+            $table->integer('job_level')->nullable();
+            $table->string('recruitment_process')->nullable();
+            $table->string('salary_value')->nullable();
+            $table->boolean('is_salary_visible')->default(false);
+            $table->boolean('is_applied')->default(false);
+            $table->integer('benefit_id')->nullable();
+            $table->boolean('is_edit')->default(false);
+            $table->timestamp('created_at')->useCurrent()->nullable();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
 
-        Schema::create('job_batches', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('name');
-            $table->integer('total_jobs');
-            $table->integer('pending_jobs');
-            $table->integer('failed_jobs');
-            $table->longText('failed_job_ids');
-            $table->mediumText('options')->nullable();
-            $table->integer('cancelled_at')->nullable();
-            $table->integer('created_at');
-            $table->integer('finished_at')->nullable();
-        });
+        // Schema::create('job_batches', function (Blueprint $table) {
+        //     $table->string('id')->primary();
+        //     $table->string('name');
+        //     $table->integer('total_jobs');
+        //     $table->integer('pending_jobs');
+        //     $table->integer('failed_jobs');
+        //     $table->longText('failed_job_ids');
+        //     $table->mediumText('options')->nullable();
+        //     $table->integer('cancelled_at')->nullable();
+        //     $table->integer('created_at');
+        //     $table->integer('finished_at')->nullable();
+        // });
 
-        Schema::create('failed_jobs', function (Blueprint $table) {
-            $table->id();
-            $table->string('uuid')->unique();
-            $table->text('connection');
-            $table->text('queue');
-            $table->longText('payload');
-            $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
-        });
+        // Schema::create('failed_jobs', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('uuid')->unique();
+        //     $table->text('connection');
+        //     $table->text('queue');
+        //     $table->longText('payload');
+        //     $table->longText('exception');
+        //     $table->timestamp('failed_at')->useCurrent();
+        // });
     }
 
     /**
