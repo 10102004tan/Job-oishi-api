@@ -12,19 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+            $table->id()->autoIncrement();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone')->unique();
+            $table->integer('role');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('update_at')->useCurrentOnUpdate()->nullable();
+
+            $table->timestamp('email_verified_at')->useCurrent();
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->rememberToken();  
+           
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->useCurrent();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
