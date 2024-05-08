@@ -43,22 +43,64 @@ class DetailJobAPIController extends Controller
         if ($response->ok()) {
         $dataAPI = json_decode($response)->data;
         // dd($dataAPI);
+
+        // Khởi tạo mảng để lưu thông tin các địa chỉ
+        $addresses = [];
+        // Lặp qua mỗi địa chỉ trong mảng collection_addresses
+        foreach($dataAPI->company->addresses->collection_addresses as $address){
+            $addressInfo = [
+                'street' => $address->street,
+                'ward' => $address->ward->value,
+                'district' => $address->district->value,
+                'province' => $address->province->value,
+            ];
+        
+            // Thêm thông tin của địa chỉ vào mảng chứa thông tin của tất cả các địa chỉ
+            $addresses[] = $addressInfo;
+        }
+
+        // Lấy thông tin companay 
+        $company = [
+            "id" => $dataAPI->company->id,
+            "display_name" => $dataAPI->company->display_name,
+            "image_logo" => $dataAPI->company->image_logo,
+            "description" => strip_tags($dataAPI->company->display_name),
+            "website" => $dataAPI->company->website,
+            "tagline" => $dataAPI->company->tagline,
+            "company_size" => $dataAPI->company->company_size,
+            "addresses" => $addresses
+        ];
+
+        // Lấy thông tin benefits của job
+        $benifits = array_map(function ($benifit) {
+            return [
+                'icon' => $benifit->icon,
+                'value' => $benifit->value
+            ];
+        }, $dataAPI->benefits);
+
+        $recruitment_process = array_map(function ($recruitment) {
+            return $recruitment->name;
+        }, $dataAPI->company->recruitment_process);
+
         $data = [];
         $data["id"] = $dataAPI->id;
         $data["title"] = strip_tags($dataAPI->title);
         $data["content"] = strip_tags($dataAPI->content);
         $data["requirements"] = strip_tags($dataAPI->requirements);
         $data["responsibilities"] = strip_tags($dataAPI->responsibilities);
-        $data["company_id"] = $dataAPI->company->id;
-        $data["company_name"] = $dataAPI->company->display_name;
-        $data["company_logo"] = $dataAPI->company->image_logo;
+        $data["company"] = $company;
         $data["skills"] = array_map('strip_tags', $dataAPI->skills_arr);
         $data["experience"] = $dataAPI->experiences_str;
-        $data["is_edit"] = 0;
-        $data["is_salary_value"] = $dataAPI->is_salary_visible;
-        $data["is_salary_value"] = $dataAPI->salary->value . " ". $dataAPI->salary->currency . " / " . $dataAPI->salary->unit ;
+        $data["job_types_str"] = $dataAPI->job_types_str;
         $data["job_level"] = $dataAPI->job_levels_str;
+        $data["recruitment_process"] = $recruitment_process;
+        $data["is_salary_visible"] = $dataAPI->is_salary_visible;
+        $data["salary_value"] = $dataAPI->salary->value . " ". $dataAPI->salary->currency . " / " . $dataAPI->salary->unit ;
+        $data["benefits"] = $benifits;
+        $data["is_edit"] = false;
         $data["is_applied"] = $dataAPI->is_applied;
+        $data["modified"] = $dataAPI->modified;
         // dd($dataAPI->skills_arr);
 
             return $data;
