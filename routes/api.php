@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BenefitAPIDBController;
 use App\Http\Controllers\Api\CompanyApiController;
+use App\Http\Controllers\API\DetailJobAPIController;
 use App\Http\Controllers\Api\CompanyAPIDBController;
 use App\Http\Controllers\Api\JobAPIDBController;
 use App\Http\Controllers\Api\JobController;
@@ -11,6 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
+
+Route::get('company/job', [CompanyApiController::class, "getJob"]);
+Route::get('company/{id}', [CompanyApiController::class, "show"]);
+Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
 Route::resource('company', CompanyApiController::class);
 Route::get('/test', [TestController::class, 'handleAPI']);
 Route::get('companies/id={id}', [CompanyAPIDBController::class, 'getDetail']);
@@ -20,8 +25,9 @@ Route::resource('benefits', BenefitAPIDBController::class);
 Route::resource('jobs', JobAPIDBController::class);
 Route::resource('companies', CompanyAPIDBController::class);
 
-Route::get('/company/job', [CompanyApiController::class, "getJob"]);
+
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
+
 Route::get('/test', [TestController::class, 'handleAPI']);
 Route::get("/jobs", [JobController::class, 'index']);
 Route::get("/user/{id}", [UserApiController::class, "show"])->name("detail_user");
