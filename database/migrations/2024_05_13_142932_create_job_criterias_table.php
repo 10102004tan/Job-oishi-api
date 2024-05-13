@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('job_criterias', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->text('job_position');
-            $table->text('job_location');
-            $table->text('job_salary');
-            $table->text('working_form');
-            $table->tinyInteger('is_remote');
+            $table->integer('user_id')->uniqid();
+            $table->text('job_position')->nullable();
+            $table->text('job_location')->nullable();
+            $table->text('job_salary')->nullable();
+            $table->text('working_form')->nullable();
+            $table->tinyInteger('is_remote')->nullable();
             $table->timestamps();
         });
     }
