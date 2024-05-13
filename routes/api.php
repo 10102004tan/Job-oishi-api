@@ -7,8 +7,10 @@ use App\Http\Controllers\API\DetailJobAPIController;
 use App\Http\Controllers\Api\CompanyAPIDBController;
 use App\Http\Controllers\Api\JobAPIDBController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\TestController;
+use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('company/job', [CompanyApiController::class, "getJob"]);
 Route::get('company/{id}', [CompanyApiController::class, "show"]);
 Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
+Route::post('/upload', [UploadFileController::class, "store"]);
 
 Route::resource('company', CompanyApiController::class);
 Route::get('/test', [TestController::class, 'handleAPI']);
