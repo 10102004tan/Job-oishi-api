@@ -14,7 +14,7 @@ class JobAPIDBController extends Controller
      */
     public function index()
     {
-        $jobs = Job::with('company')->get()->makeHidden(['company_id']);
+        $jobs = Job::with('company', 'benefits')->get()->makeHidden(['company_id']);
         return $jobs;
     }
 

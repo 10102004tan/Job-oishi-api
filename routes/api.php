@@ -18,15 +18,20 @@ Route::get('/test', [TestController::class, 'handleAPI']);
 
 Route::get('companies/id={id}', [CompanyAPIDBController::class, 'getDetail']);
 Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
-
+Route::get("/jobs", [JobAPIDBController::class, 'index']);
 Route::resource('benefits', BenefitAPIDBController::class);
-Route::resource('jobs', JobAPIDBController::class);
+// Route::resource('jobs', JobAPIDBController::class);
 Route::resource('companies', CompanyAPIDBController::class);
 
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
+
 Route::get('/test', [TestController::class, 'handleAPI']);
-Route::get("/jobs", [JobController::class, 'index']);
+
+// Route::get("/jobs", [JobController::class, 'index']);
+Route::get("/jobs/search", [JobController::class, 'search']);
+
+
 Route::get("/user/{id}", [UserApiController::class, "show"])->name("detail_user");
 Route::post("/user/{id}", [UserApiController::class, "update"])->name("update_user");
 Route::delete("/user/{id}", [UserApiController::class, "destroy"])->name("delete_user");
