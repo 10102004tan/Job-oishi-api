@@ -25,6 +25,8 @@ class User extends Authenticatable
         'gender',
         'education',
         'time_starting_work',
+        'country',
+        'city',
     ];
 
     /**
