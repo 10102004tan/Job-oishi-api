@@ -20,11 +20,16 @@ return new class extends Migration
             $table->integer('role');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('update_at')->useCurrentOnUpdate()->nullable();
-
             $table->timestamp('email_verified_at')->useCurrent();
-            $table->string('password');
-            $table->rememberToken();  
-           
+            $table->string('birth');
+            $table->string('gender');
+            $table->string('education', 500);
+            $table->string('time_starting_work');
+            $table->string('photo_url', 555);
+            $table->string('country');
+            $table->string('city');
+            $table->string('province');
+            $table->rememberToken();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
