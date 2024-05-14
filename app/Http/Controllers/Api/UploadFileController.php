@@ -4,22 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Benefit;
+use App\Models\File;
 
-class BenefitAPIDBController extends Controller
+class UploadFileController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $hiddenColumns = ['id', 'pivot', 'created_at', 'updated_at'];
-    
-        $benefits = Benefit::all()->makeHidden($hiddenColumns);
-        
-        return $benefits;
+        //
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +29,18 @@ class BenefitAPIDBController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Lấy dữ liệu từ yêu cầu
+        $userId = $request->input('user_id'); // Lấy giá trị user_id từ yêu cầu
+        $file = $request->file('name'); // Lấy tệp PDF từ yêu cầu
+
+        // Xử lý tệp PDF ở đây
+        $path = $file->store('pdfs');
+
+        // Trả về phản hồi thành công hoặc thông tin khác
+        return response()->json([
+            'message' => 'File uploaded successfully',
+            'name' => $file
+        ]);
     }
 
     /**
