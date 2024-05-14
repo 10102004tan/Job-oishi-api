@@ -7,6 +7,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @vite('resources/css/app.css')
 </head>
 
 <body>
@@ -45,6 +46,12 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->is('benefits*') ? 'active' : '' }}" aria-current="page">
+                        <i class="bi bi-basket2"></i>
+                        Nofications
+                    </a>
+                </li>
             </ul>
             <hr>
             <div class="dropdown">
