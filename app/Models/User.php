@@ -49,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_token; // Hoặc một mảng các token
+    }
 }

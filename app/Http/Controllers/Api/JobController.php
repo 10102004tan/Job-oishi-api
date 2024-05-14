@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
+use App\Models\JobBookmark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -12,7 +13,7 @@ class JobController extends Controller
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=$page_size&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
         $data = json_decode($response->getBody()->getContents(), true);
         $collection = collect($data['data']);
-        // // Xử lý dữ liệu tại đây...
+        // // // Xử lý dữ liệu tại đây...
         $filteredData = $collection->map(function ($job) {
             return [
             'id' => $job['id'],
@@ -23,10 +24,56 @@ class JobController extends Controller
             'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
             'salary_min' => $job['salary']['min'],
             'salary_max' => $job['salary']['max'],
+            'is_salary_visible'=> $job['is_salary_visible'],
+            'published' => $job['published']['since'],
             ];
         });
 
-        // $data['data'] = $filteredData;
+        $data['data'] = $filteredData;
         return response()->json($filteredData);
+        // return $data;
+    }
+
+
+    public function bookmark(Request $request){
+        //add job to bookmark
+        // $job = new JobBookmark();
+        // $job->id = $request->id;
+        // $job->title = $request->title;
+        // $job->company_name = $request->company_name;
+        // $job->company_logo = $request->company_logo;
+        // $job->sort_addresses = $request->sort_addresses;
+        // $job->salary_min = $request->salary_min;
+        // $job->salary_max = $request->salary_max;
+        // $job->is_salary_visible = $request->is_salary_visible;
+        // $job->published = $request->published;
+        // $job->save();
+        // return $job;
+        // return $data;
+
+        JobBookmark::create([
+            'id' => $request->id,
+            'title' => $request->title,
+            'company_name' => $request->company_name,
+            'company_logo' => $request->company_logo,
+            'sort_addresses' => $request->sort_addresses,
+            'salary_min' => $request->salary_min,
+            'salary_max' => $request->salary_max,
+            'is_salary_visible' => $request->is_salary_visible,
+            'published' => $request->published,
+        ]);
+
+        // $data = $request->all();
+
+
+       
+    }
+    public function getAllJobsBookmark(Request $request){
+        $jobs = JobBookmark::where('user_id', 0)->get();
+        return $jobs;
+    }
+
+    public function test(){
+        return view('test');
     }
 }

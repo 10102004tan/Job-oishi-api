@@ -6,13 +6,13 @@ use App\Http\Controllers\Api\CompanyAPIDBController;
 use App\Http\Controllers\Api\JobAPIDBController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
 Route::resource('company', CompanyApiController::class);
-Route::get('/test', [TestController::class, 'handleAPI']);
 Route::get('companies/id={id}', [CompanyAPIDBController::class, 'getDetail']);
 Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
 
@@ -24,8 +24,23 @@ Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
 Route::get('/test', [TestController::class, 'handleAPI']);
 Route::get("/jobs", [JobController::class, 'index']);
+
+//bookmark start
+Route::prefix('jobs')->group(function () {
+    Route::prefix('bookmark')->group(function () {
+        Route::post("/", [JobController::class, 'bookmark']);
+        Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
+    });
+});
+
+//bookmark end
+
 Route::get("/user/{id}", [UserApiController::class, "show"])->name("detail_user");
 Route::post("/user/{id}", [UserApiController::class, "update"])->name("update_user");
 Route::delete("/user/{id}", [UserApiController::class, "destroy"])->name("delete_user");
 Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
+
+
+//notification route resource
+Route::resource('notifications', NotificationController::class);
