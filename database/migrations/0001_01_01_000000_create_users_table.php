@@ -16,15 +16,22 @@ return new class extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->unique();
-            $table->string('phone')->unique();
-            $table->integer('role');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('update_at')->useCurrentOnUpdate()->nullable();
-
+            $table->string('phone')->nullable();
+            $table->integer('role')->default(0);
             $table->timestamp('email_verified_at')->useCurrent();
-            $table->string('password');
-            $table->rememberToken();  
-           
+            $table->text('password');
+            $table->string('birth')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('education', 500)->nullable();
+            $table->string('time_starting_work')->nullable();
+            $table->string('photo_url', 555)->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('province')->nullable();
+            $table->string('login_method')->default("email_login");
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
+            $table->rememberToken();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
