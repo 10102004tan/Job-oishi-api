@@ -4,12 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -25,6 +26,8 @@ class User extends Authenticatable
         'gender',
         'education',
         'time_starting_work',
+        'country',
+        'city',
     ];
 
     /**
@@ -50,8 +53,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function routeNotificationForFcm()
-    {
-        return $this->fcm_token; // Hoặc một mảng các token
+
+    public function jobCriteria():HasOne {
+        return $this->hasOne(JobCriteria::class);
+
     }
 }

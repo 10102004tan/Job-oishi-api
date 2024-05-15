@@ -30,12 +30,45 @@ class UserApiController extends Controller
         ]);
 
         if ($validated) {
+            // Create user information
             $user = User::create($validated);
+
+            // Create job criteria of user
+            $user->jobCriteria()->create([
+                'user_id' => $user->id
+            ]);
             return $user;
         }else {
             return array("status" => 500, "message" => "Error while creating user");
         }
     }
+
+    /**
+     * Get job criteria of user
+    */
+
+    public function getJobCriteria($id) {
+        $user = User::find($id);
+        if ($user) {
+            return $user->jobCriteria;
+        }else {
+            return array("status" => 404, "message" => "User not found");
+        }
+    }
+
+    /**
+     * Update user job criteria
+    */
+    public function updateJobCriteria(Request $request) {
+        $user = User::find($request->user_id);
+        if ($user) {
+            $user->jobCriteria()->update($request->all());
+            return $user->jobCriteria;
+        }else {
+            return array("status" => 404, "message" => "User not found");
+        }
+    }
+
 
     /**
      * Display the specified resource.
