@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\JobController as ApiJobController;
 use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;

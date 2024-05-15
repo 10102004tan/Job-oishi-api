@@ -6,9 +6,20 @@ use App\Http\Controllers\API\DetailJobAPIController;
 use App\Http\Controllers\Api\CompanyAPIDBController;
 use App\Http\Controllers\Api\JobAPIDBController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TestController;
+use GuzzleHttp\Psr7\UploadedFile;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('company/job', [CompanyApiController::class, "getJob"]);
+Route::get('company/{id}', [CompanyApiController::class, "show"]);
+Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
+Route::post('/upload', [UploadFileController::class, "store"]);
+
 
 // Company api routes
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
@@ -25,6 +36,22 @@ Route::resource('benefits', BenefitAPIDBController::class);
 Route::resource('jobs', JobAPIDBController::class);
 
 
+Route::get('/company/job', [CompanyApiController::class, "getJob"]);
+Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
+
+Route::get('/test', [TestController::class, 'handleAPI']);
+Route::get("/jobs", [JobController::class, 'index']);
+
+
+//bookmark start
+Route::prefix('jobs')->group(function () {
+    Route::prefix('bookmark')->group(function () {
+        Route::post("/", [JobController::class, 'bookmark']);
+        Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
+    });
+});
+//bookmark end
+
 // User api routes
 Route::post("/user/login", [UserApiController::class, "login"])->name("user_login");
 Route::get("/user/{id}", [UserApiController::class, "show"])->name("detail_user");
@@ -34,6 +61,14 @@ Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
 
+
+//notification start route resource
+Route::resource('notifications', NotificationController::class);
+//notification end route resource
+
+
 // User job criteria api routes
 Route::get("/user/{id}/job_criteria", [UserApiController::class, "getJobCriteria"])->name("get_job_criteria");
 Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCriteria"])->name("update_job_criteria");
+
+
