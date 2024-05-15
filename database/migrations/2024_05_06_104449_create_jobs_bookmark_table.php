@@ -14,17 +14,18 @@ return new class extends Migration
         Schema::create('jobs_bookmark', function (Blueprint $table) {
             $table->integer('id');
             $table->integer('user_id')->default(1);
+            $table->primary(['id', 'user_id']);
             $table->string('title');
             $table->string('company_name');
-            $table->string('company_logo');
+            $table->text('company_logo');
             $table->string('sort_addresses');
-            $table->integer('salary_min');
-            $table->integer('salary_max');
+            $table->string('salary_min')->default('*');
+            $table->string('salary_max')->default('*');
             $table->boolean('is_salary_visible');
             $table->string('published');
+            $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

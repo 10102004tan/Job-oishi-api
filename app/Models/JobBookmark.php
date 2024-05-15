@@ -9,6 +9,13 @@ class JobBookmark extends Model
 
     protected $table = 'jobs_bookmark';
 
+    protected $primaryKey = ['id', 'user_id'];
+    public $incrementing = false;
+
+    protected $casts = [
+        'is_salary_visible' => 'boolean',
+    ];
+
     protected $fillable = [
         'id',
         'user_id',

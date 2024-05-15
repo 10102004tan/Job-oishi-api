@@ -46,8 +46,9 @@ Route::get("/jobs", [JobController::class, 'index']);
 //bookmark start
 Route::prefix('jobs')->group(function () {
     Route::prefix('bookmark')->group(function () {
-        Route::post("/", [JobController::class, 'bookmark']);
+        Route::post("/", [JobController::class, 'bookmark'])->name('jobs.bookmark');
         Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
+        Route::delete("/destroy", [JobController::class, 'destroyJobOnBookmark']);
     });
 });
 //bookmark end
