@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
 {
@@ -112,6 +113,30 @@ class UserApiController extends Controller
             return array("status" => 200, "message" => "User deleted");
         }else {
             return array("status" => 404, "message" => "User not found");
+        }
+    }
+
+    /**
+     * User login
+     */
+
+     public function login(Request $request) {
+        if (!$request->has(['email', 'password'])) {
+            return response()->json([
+                "status" => 400,
+                "message" => "Email and password are required"
+            ], 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            return $user;
+        } else {
+            return response()->json([
+                "status" => 404,
+                "message" => "User not found or incorrect password"
+            ], 404);
         }
     }
 }

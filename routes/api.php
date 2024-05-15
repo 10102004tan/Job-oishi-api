@@ -26,6 +26,7 @@ Route::resource('jobs', JobAPIDBController::class);
 
 
 // User api routes
+Route::post("/user/login", [UserApiController::class, "login"])->name("user_login");
 Route::get("/user/{id}", [UserApiController::class, "show"])->name("detail_user");
 Route::post("/user/{id}", [UserApiController::class, "update"])->name("update_user");
 Route::delete("/user/{id}", [UserApiController::class, "destroy"])->name("delete_user");
