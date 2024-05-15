@@ -39,9 +39,9 @@ Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
 
 Route::get('/test', [TestController::class, 'handleAPI']);
+Route::get("/jobs/searchrm/", [JobController::class, 'searchRemote']);
 Route::get("/jobs/search/", [JobController::class, 'search']);
 Route::get("/jobs", [JobController::class, 'index']);
-
 
 // User api routes
 
