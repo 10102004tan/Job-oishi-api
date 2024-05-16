@@ -64,7 +64,7 @@ class DetailJobAPIController extends Controller
             "id" => $dataAPI->company->id,
             "display_name" => $dataAPI->company->display_name,
             "image_logo" => $dataAPI->company->image_logo,
-            "description" => strip_tags($dataAPI->company->display_name),
+            "description" => html_entity_decode(strip_tags($dataAPI->company->display_name)),
             "website" => $dataAPI->company->website,
             "tagline" => $dataAPI->company->tagline,
             "company_size" => $dataAPI->company->company_size,
@@ -86,9 +86,9 @@ class DetailJobAPIController extends Controller
         $data = [];
         $data["id"] = $dataAPI->id;
         $data["title"] = strip_tags($dataAPI->title);
-        $data["content"] = strip_tags($dataAPI->content);
-        $data["requirements"] = strip_tags($dataAPI->requirements);
-        $data["responsibilities"] = strip_tags($dataAPI->responsibilities);
+        $data["content"] = html_entity_decode(strip_tags($dataAPI->content));
+        $data["requirements"] = html_entity_decode(strip_tags($dataAPI->requirements));
+        $data["responsibilities"] = html_entity_decode(strip_tags($dataAPI->responsibilities));
         $data["company"] = $company;
         $data["skills"] = array_map('strip_tags', $dataAPI->skills_arr);
         $data["experience"] = $dataAPI->experiences_str;
