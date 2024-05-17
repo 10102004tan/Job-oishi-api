@@ -5,39 +5,41 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
-
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 class JobAPIDBController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
-        $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at'];
-    
-        // Lấy số trang từ yêu cầu HTTP, mặc định là 1 nếu không được chỉ định
+        $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at', 'benefit_id'];
+
         $page = $request->input('page', 1);
-    
+
         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
-                    ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
-                    ->select('jobs.*', 'companies.display_name as display_name', 'companies.image_logo as image_logo', 'addresses.address as sort_address')
-                    ->paginate(10); // Số lượng mục trên mỗi trang, ở đây là 5
-    
-        // Ẩn các trường được chỉ định
+            ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
+            ->select('jobs.*', 'companies.display_name as display_name', 'companies.image_logo as image_logo', 'addresses.address as sort_address')
+            ->paginate(10);
+
+
         $jobs->getCollection()->transform(function ($job) use ($makeHidden) {
             $job->makeHidden($makeHidden);
             $job->is_applied = (bool) $job->is_applied;
             $job->is_salary_visible = (bool) $job->is_salary_visible;
+            $job->published = $this->formatTimeDifference($job->published);
             return $job;
         });
-    
+
         // Thêm tham số trang vào URL
         $jobs->appends($request->only('page'));
-    
+
         return response()->json($jobs->values());
     }
-    
+
 
 
     /**
@@ -105,5 +107,20 @@ class JobAPIDBController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    
+    private function formatTimeDifference($timestamp)
+    {
+        $givenDate = Carbon::parse($timestamp);
+        $now = Carbon::now();
+
+        if ($givenDate->diffInDays($now) >= 1) {
+            return $givenDate->diffForHumans($now, CarbonInterface::DIFF_RELATIVE_TO_NOW);
+        } else if ($givenDate->diffInHours($now) >= 1) {
+            return $givenDate->diffForHumans($now, CarbonInterface::DIFF_RELATIVE_TO_NOW);
+        } else {
+            return "Vừa xong";
+        }
     }
 }

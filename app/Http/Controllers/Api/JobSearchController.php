@@ -10,7 +10,7 @@ class JobSearchController extends Controller
 {
     public function index(Request $request)
     {
-        $page_size = $request->query('page_size', 1000);
+        $page_size = $request->query('page_size', 100);
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=$page_size&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
 
         $data = json_decode($response->getBody()->getContents(), true);
@@ -67,7 +67,7 @@ class JobSearchController extends Controller
 
    
         // Gửi yêu cầu đến API TopDev với các tham số
-        $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=1000&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url,contract_types_str");
+        $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=1000&locale=vi_VN&fields[job]=id,company,title,salary,addresses,published,contract_types_str,benefits,experiences_str");
 
         // Xử lý phản hồi từ API TopDev
         $data = json_decode($response->getBody()->getContents(), true);
@@ -92,13 +92,14 @@ class JobSearchController extends Controller
                 $sort_address = strtolower($job['addresses']['sort_addresses']);
                 return strpos($title, 'remote') !== false || strpos($title, 'home') !== false || strpos($title, 'freelance') !== false || strpos($sort_address, 'remote') !== false;
             });
-        }
+        } 
 
-        $jobTypes = ['fulltime', 'part-time', 'contract', 'internship', 'freelance'];
+        $jobTypes = ['fulltime', 'part-time', 'internship', 'freelance'];
         
         // Áp dụng bộ lọc loại công việc (jobType)
         if ($jobType && in_array($jobType, $jobTypes)) {
             $filteredData = $filteredData->filter(function ($job) use ($jobType) {
+                $jobType = strtolower($jobType);
                 return stripos($job['contract_types_str'], $jobType) !== false;
             });
         }
@@ -111,7 +112,7 @@ class JobSearchController extends Controller
             // Ví dụ: $filteredData = $filteredData->sortBy($sortBy);
         }
 
-        $experiences = ['1 năm', "3 năm", "5 năm", "10 năm"];
+        $experiences = ['1 năm', "2 năm", "3 năm", "5 năm", "10 năm"];
         // Áp dụng bộ lọc loại công việc (jobType)
         if ($experience && in_array($experience, $experiences)) {
             $filteredData = $filteredData->filter(function ($job) use ($experience) {
@@ -124,26 +125,10 @@ class JobSearchController extends Controller
 
         // Xử lý dữ liệu như trước
         $transformedData = $paginatedData->map(function ($job) {
-            $companyId = $job['company']['id'];
-            $response = Http::get("https://api.topdev.vn/td/v2/companies/$companyId/jobs?fields[job]=id,title,content,benefits,contract_types_str,contract_types_ids,requirements,salary,responsibilities,company,skills_arr,skills_ids,experiences_str&fields[company]=products,news,tagline,addresses,benefits&ordering=newest_job&page_size=2&except_ids=2032583&page=1&locale=vi_VN");
-            $companyData = json_decode($response->getBody()->getContents(), true);
-
-            // Check if company data contains benefits, experiences_str, and contract_types_str
-            if (isset($companyData['data']) && is_array($companyData['data']) && count($companyData['data']) > 0) {
-                $company = $companyData['data'][0]; // Lấy job đầu tiên trong danh sách
-                $job['experiences_str'] = $company['experiences_str'] ?? '';
-                $job['contract_types_str'] = $company['contract_types_str'] ?? '';
-                $job['benefits'] = $company['benefits'] ?? [];
-            } else {
-                $job['experiences_str'] = '';
-                $job['contract_types_str'] = '';
-                $job['benefits'] = [];
-            }
-
             return [
                 'id' => $job['id'],
-                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                // 'title' => $job['title'],
+                // 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
+                'title' => $job['title'],
                 'company_id' => $job['company']['id'],
                 'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
                 'image_logo' => $job['company']['image_logo'],
@@ -157,7 +142,7 @@ class JobSearchController extends Controller
             ];
         });
 
-        return response()->json($transformedData->values());
-    }
+        return $transformedData->values();
+        }
 
 }
