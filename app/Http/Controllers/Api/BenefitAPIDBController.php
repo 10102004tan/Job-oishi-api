@@ -13,9 +13,13 @@ class BenefitAPIDBController extends Controller
      */
     public function index()
     {
-        $benefits = Benefit::all();
+        $hiddenColumns = ['id', 'pivot', 'created_at', 'updated_at'];
+    
+        $benefits = Benefit::all()->makeHidden($hiddenColumns);
+        
         return $benefits;
     }
+    
 
     /**
      * Show the form for creating a new resource.

@@ -1,0 +1,10 @@
+https://api.topdev.vn/td/v2/jobs?keyword=&region_ids=&
+skills_id=&industries_ids=&job_levels_ids=8664&job_types_ids=
+&contract_types_ids=&salary_range=&experiences_id=&
+ordering=newest_job
+&_f=51166
+&page=2
+&page_size=15
+&locale=vi_VN&
+fields[job]=id,title,salary,slug,company,extra_skills,skills_str,skills_arr,skills_ids,job_types_str,job_levels_str,job_levels_arr,job_levels_ids,addresses,status_display,detail_url,job_url,salary,published,refreshed,applied,candidate,requirements_arr,packages,benefits,content,features,contract_types_ids,is_free,is_basic,is_basic_plus,is_distinction&fields[company]=tagline,addresses,skills_arr,industries_arr,industries_ids,industries_str,image_cover,image_galleries,
+num_job_openings,company_size,nationalities_str,skills_str,skills_ids,benefits,num_employees
