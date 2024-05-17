@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\JobController as ApiJobController;
+use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\BenefitController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ Route::resource('jobs', JobController::class);
 Route::resource('companies', CompanyController::class);
 Route::resource('benefits', BenefitController::class);
 
+Route::get('/test', [TestController::class, 'index']);
