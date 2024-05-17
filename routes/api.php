@@ -43,9 +43,8 @@ Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail
 Route::get('/test', [TestController::class, 'handleAPI']);
 
 // JOb search
-Route::get("/jobs/searchremote/", [JobSearchController::class, 'searchRemote']);
-Route::get("/jobs/search/", [JobSearchController::class, 'search']);
-Route::get("/jobs", [JobSearchController::class, 'index']);
+Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
+Route::get("/sjobs", [JobSearchController::class, 'index']);
 
 
 //bookmark start
