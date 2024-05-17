@@ -27,7 +27,7 @@ return new class extends Migration
             $table->boolean('is_salary_visible')->default(false);
             $table->boolean('is_applied')->default(false);
             $table->integer('benefit_id')->nullable();
-            $table->boolean('is_edit')->default(false);
+            $table->boolean('is_edit')->default(true);
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
