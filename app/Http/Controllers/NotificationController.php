@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\FcmNotification;
+use App\Models\User;
+use App\Models\UserFcm;
 use App\Notifications\MyFcmNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -34,11 +36,7 @@ class NotificationController extends Controller
 
         $title = $request->input('title');
         $body = $request->input('body');
-
-        $fcmTokens = ['cVunXsWqR1G6UgT1X2jsZ7:APA91bGQtgF5wWl32_VvZk46eEKh3tcOA3_4xLOYm9v8q_HudGaQnfJTb9YKjZXb5cplOggQrXHa7BMbbsfhR_dYJmkVBg5BrfTnvG3JmC2IUTkPCKjlCbvVT3K4zivRaqRXiBjHLn39',
-        'csGT20CvSPm72tuF361miK:APA91bHB7BzcYFuTn6L3QDiwIWrcke5ZTm2-gTT8j4Yh3KvnY2_v2S9FIXFn-miXdfu4d-RjsCt5C1DsGyUc4zHtSbCY8vZKkePSQMKHYC7RRUtroXeYLZpSAklAHOJiZZeZNJpXsuOK'
-        ];
-
+        $fcmTokens= UserFcm::where('is_active',1)->pluck('fcm_token')->toArray();
         $notifiables = array_map(function($fcmToken) {
             return new FcmNotification($fcmToken);
         }, $fcmTokens);

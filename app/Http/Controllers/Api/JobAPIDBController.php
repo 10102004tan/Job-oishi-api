@@ -15,7 +15,6 @@ class JobAPIDBController extends Controller
     public function index(Request $request)
     {
         $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at'];
-    
         // Lấy số trang từ yêu cầu HTTP, mặc định là 1 nếu không được chỉ định
         $page = $request->input('page', 1);
     
@@ -35,7 +34,7 @@ class JobAPIDBController extends Controller
         // Thêm tham số trang vào URL
         $jobs->appends($request->only('page'));
     
-        return response()->json($jobs->values());
+        return $jobs->values();
     }
     
 
