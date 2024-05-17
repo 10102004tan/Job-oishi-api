@@ -41,11 +41,13 @@ Route::resource('jobs2', JobAPIDBController::class);
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
 
-Route::get('/test', [TestController::class, 'handleAPI']);
+
+Route::post("/jobs", [JobController::class, 'index']);
 
 // JOb search
 Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
 Route::get("/sjobs", [JobSearchController::class, 'index']);
+
 
 
 //bookmark start
@@ -78,3 +80,6 @@ Route::resource('notifications', NotificationController::class);
 // User job criteria api routes
 Route::get("/user/{id}/job_criteria", [UserApiController::class, "getJobCriteria"])->name("get_job_criteria");
 Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCriteria"])->name("update_job_criteria");
+
+//api cho users_device với phương thức post
+Route::post('fcm', [UserApiController::class, "saveFcmToken"])->name('user.fcm');
