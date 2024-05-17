@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
             'company_id' => 1,
             'job_type_str' => "111",
             'job_level' => 2,
-            'salary_value' => true,
-            
+            'salary_min' => '*',
+            'salary_max' => '*'            
         ]);
         DB::table('jobs')->insert([
             'title' => 'Công việc 2',
@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
             'company_id' => 2,
             'job_type_str' => "111",
             'job_level' => 1,
-            'salary_value' => false,
+            'salary_min' => '*',
+            'salary_max' => '*'
             
         ]);
         DB::table('jobs')->insert([
@@ -40,9 +41,10 @@ class DatabaseSeeder extends Seeder
             'content' => 'Nội dung công việc 3',
             'experience' => "2",
             'is_edit' => 0,
-            'company_id' => "111",
+            'company_id' => 1,
             'job_level' => 2,
-            'salary_value' => false,
+            'salary_min' => '*',
+            'salary_max' => '*'
             
         ]);
         DB::table('jobs')->insert([
@@ -52,10 +54,99 @@ class DatabaseSeeder extends Seeder
             'company_id' => 3,
             'job_type_str' => "111",
             'job_level' => 1,
-            'salary_value' => false,
+            'salary_min' => '*',
+            'salary_max' => '*'
             
         ]);
-        
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 5',
+            'content' => 'Nội dung công việc 5',
+            'experience' => "2",
+            'company_id' => 3,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 6',
+            'content' => 'Nội dung công việc 6',
+            'experience' => "2",
+            'company_id' => 2,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 7',
+            'content' => 'Nội dung công việc 7',
+            'experience' => "2",
+            'company_id' => 1,
+            'job_type_str' => "111",
+            'job_level' => 2,
+            'salary_min' => '*',
+            'salary_max' => '*'            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 8',
+            'content' => 'Nội dung công việc 8',
+            'experience' => "2",
+            'company_id' => 2,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 9',
+            'content' => 'Nội dung công việc 9',
+            'experience' => "2",
+            'is_edit' => 0,
+            'company_id' => 1,
+            'job_level' => 2,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 10',
+            'content' => 'Nội dung công việc 10',
+            'experience' => "2",
+            'company_id' => 3,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 11',
+            'content' => 'Nội dung công việc 11',
+            'experience' => "2",
+            'company_id' => 3,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+        DB::table('jobs')->insert([
+            'title' => 'Công việc 12',
+            'content' => 'Nội dung công việc 12',
+            'experience' => "2",
+            'company_id' => 2,
+            'job_type_str' => "111",
+            'job_level' => 1,
+            'salary_min' => '*',
+            'salary_max' => '*'
+            
+        ]);
+
         DB::table('companies')->insert([
             'display_name' => 'GEO SYSTEM SOLUTIONS VIETNAM',
             'image_logo' => 'https://assets.topdev.vn/images/2024/04/09/TopDev-b5af9c126cd5f9f13df813192f5a66e6-1712625847.png',
@@ -123,6 +214,30 @@ class DatabaseSeeder extends Seeder
         DB::table('addresses')->insert([
             'company_id' => 1,
             'address' => '53 Võ Văn Ngân, TP. Thủ Đức, TP. Hồ Chí Minh',
+            // 'district' => 'TP. Thủ Đức',
+            // 'province' => 'TP. Hồ Chí Minh'
+
+        ]);
+
+        DB::table('addresses')->insert([
+            'company_id' => 2,
+            'address' => 'Quận Bình Thạnh, TP. Hồ Chí Minh',
+            // 'district' => 'TP. Thủ Đức',
+            // 'province' => 'TP. Hồ Chí Minh'
+
+        ]);
+
+        DB::table('addresses')->insert([
+            'company_id' => 3,
+            'address' => 'Quận 1, TP. Hồ Chí Minh',
+            // 'district' => 'TP. Thủ Đức',
+            // 'province' => 'TP. Hồ Chí Minh'
+
+        ]);
+
+        DB::table('addresses')->insert([
+            'company_id' => 4,
+            'address' => 'TP. Thủ Đức, TP. Hồ Chí Minh',
             // 'district' => 'TP. Thủ Đức',
             // 'province' => 'TP. Hồ Chí Minh'
 

@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\JobBookmark;
@@ -11,6 +13,8 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
+        $jobAPIDBController = new JobAPIDBController();
+        $jobs = $jobAPIDBController->index($request);
         $page_size = 15;
         $page = $request->query('page', 1);
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=$page_size&page=$page&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
@@ -32,8 +36,6 @@ class JobController extends Controller
             ];
         });
 
-        $jobs = Job::with('company')->get()->makeHidden(['company_id']);
-        $data['data'] = $filteredData;
         $mergedData = collect($jobs)->merge( $filteredData)->toArray();
         return response()->json($mergedData);
     }

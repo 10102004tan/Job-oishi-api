@@ -1,25 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
+use App\Models\JobApplied;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\Benefit;
 
-class BenefitAPIDBController extends Controller
+class JobAppliedController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $hiddenColumns = ['id', 'pivot', 'created_at', 'updated_at'];
-    
-        $benefits = Benefit::all()->makeHidden($hiddenColumns);
-        
-        return $benefits;
+        $jobApplied = JobApplied::all();
+        return $jobApplied;
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +29,24 @@ class BenefitAPIDBController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $jobApplied = new JobApplied();
+        $jobApplied->id = $request['id'];
+        $jobApplied->user_id = $request['user_id'];
+        $jobApplied->title = $request['title'];
+        $jobApplied->company_id = $request['company_id'];
+        $jobApplied->company_logo = $request['company_logo'];
+        $jobApplied->sort_addresses = $request['sort_addresses'];
+        $jobApplied->is_applied = $request['is_applied'];
+        $jobApplied->is_salary_visible = $request['is_salary_visible'];
+        $jobApplied->published = $request['published'];
+        
+
+        // $jobApplied->save();
+
+        return response()->json([
+            'message' => 'Applied successfully',
+            'title' =>  $request['title']
+        ]);
     }
 
     /**

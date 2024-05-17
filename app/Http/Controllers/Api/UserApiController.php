@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserFcm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
 {
@@ -142,5 +143,28 @@ class UserApiController extends Controller
         // Nếu tìm thấy mà is_active = true thì không làm gì cả
         return array("status" => 200, "message" => "Fcm token saved");
         // Trả về thông báo
+    }
+    /**
+     * User login
+     */
+
+     public function login(Request $request) {
+        if (!$request->has(['email', 'password'])) {
+            return response()->json([
+                "status" => 400,
+                "message" => "Email and password are required"
+            ], 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->password)) {
+            return $user;
+        } else {
+            return response()->json([
+                "status" => 404,
+                "message" => "User not found or incorrect password"
+            ], 404);
+        }
     }
 }
