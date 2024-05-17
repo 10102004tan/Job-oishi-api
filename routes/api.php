@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\JobSearchController;
 use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\JobAppliedController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TestController;
 use GuzzleHttp\Psr7\UploadedFile;
@@ -65,6 +66,8 @@ Route::delete("/user/{id}", [UserApiController::class, "destroy"])->name("delete
 Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
+// Applied Job
+Route::post('/applied', [JobAppliedController::class, "store"]);
 
 
 //notification start route resource

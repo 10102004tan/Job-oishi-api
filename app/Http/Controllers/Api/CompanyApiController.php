@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\HtmlString;
 
 class CompanyApiController extends Controller
 {
@@ -13,7 +14,6 @@ class CompanyApiController extends Controller
      */
     public function index()
     {
-
     }
 
     /**
@@ -34,23 +34,44 @@ class CompanyApiController extends Controller
 
         if ($response->ok()) {
             $data_response = json_decode($response)->data;
-            // dd($data_response);
+
+
+            // Khởi tạo mảng để lưu thông tin các địa chỉ
+            $addresses = [];
+            // Lặp qua mỗi địa chỉ trong mảng collection_addresses
+            foreach ($data_response->addresses->collection_addresses as $address) {
+                $addressInfo = [
+                    'street' => $address->street,
+                    'ward' => $address->ward->value,
+                    'district' => $address->district->value,
+                    'province' => $address->province->value,
+                ];
+
+                // Thêm thông tin của địa chỉ vào mảng chứa thông tin của tất cả các địa chỉ
+                $addresses[] = $addressInfo;
+            }
+
+           // Lấy thông tin benefits của job
+        $image_galleries = array_map(function ($image_gallerie) {
+            return $image_gallerie->url;
+        }, $data_response->image_galleries);
+
             $data = array();
             $data["id"] = $data_response->id;
             $data["display_name"] = $data_response->display_name;
             $data["image_logo"] = $data_response->image_logo;
-            $data["description"] = $data_response->description;
+            $data["description"] = html_entity_decode(strip_tags($data_response->description));
             $data["website"] = $data_response->website;
             $data["tagline"] = $data_response->tagline;
             $data["company_size"] = $data_response->company_size;
-            $data["address_region_id"] = $data_response->addresses;
+            $data["addresses"] = $addresses;
             $data["num_job_openings"] = $data_response->num_job_openings;
+            $data["image_galleries"] = $image_galleries;
             $data["benefits"] = $data_response->benefits;
             $data["nationality_id"] = $data_response->nationalities_arr;
 
             return $data;
-
-        }else {
+        } else {
             return array(
                 "message" => "No company found !!!",
                 "status" => 500
@@ -59,7 +80,7 @@ class CompanyApiController extends Controller
     }
 
 
-        /**
+    /**
      * Display all the job of company
      */
     public function getJob(Request $request)
@@ -90,8 +111,7 @@ class CompanyApiController extends Controller
             }
 
             return $data;
-
-        }else {
+        } else {
             return array(
                 "message" => "Job not found !!!",
                 "status" => 500
