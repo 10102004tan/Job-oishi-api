@@ -6,6 +6,7 @@ use App\Http\Controllers\API\DetailJobAPIController;
 use App\Http\Controllers\Api\CompanyAPIDBController;
 use App\Http\Controllers\Api\JobAPIDBController;
 use App\Http\Controllers\Api\JobController;
+use App\Http\Controllers\Api\JobSearchController;
 use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\JobAppliedController;
@@ -34,14 +35,17 @@ Route::resource('companies', CompanyAPIDBController::class);
 Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
 Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
-Route::resource('jobs', JobAPIDBController::class);
+Route::resource('jobs2', JobAPIDBController::class);
 
 
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
 
 Route::get('/test', [TestController::class, 'handleAPI']);
-Route::get("/jobs", [JobController::class, 'index']);
+
+// JOb search
+Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
+Route::get("/sjobs", [JobSearchController::class, 'index']);
 
 
 //bookmark start

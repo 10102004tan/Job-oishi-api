@@ -23,13 +23,16 @@ return new class extends Migration
             $table->string('job_type_str')->nullable();
             $table->integer('job_level')->nullable();
             $table->string('recruitment_process')->nullable();
-            $table->string('salary_value')->nullable();
+            $table->string('salary_min')->nullable()->default('*');
+            $table->string('salary_max')->nullable()->default('*');
             $table->boolean('is_salary_visible')->default(false);
             $table->boolean('is_applied')->default(false);
             $table->integer('benefit_id')->nullable();
             $table->boolean('is_edit')->default(false);
+            $table->string('published')->nullable()->default(now());
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
+            
         });
 
         // Schema::create('job_batches', function (Blueprint $table) {
