@@ -8,16 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class JobApplied extends Model
 {
     use HasFactory;
+    // Chỉ định tên bảng tùy chỉnh
+    protected $table = 'job_applied';
     protected $fillable = [
-        'id',
+        'job_id',
         'user_id',
-        'title',
-        'company_id',
-        'company_name',
-        'company_logo',
-        'sort_addresses',
-        'is_applied',
-        'is_salary_visible',
-        'published',
     ];
 }
