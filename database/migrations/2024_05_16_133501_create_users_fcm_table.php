@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+        Schema::create('users_device', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->unsignedBigInteger("user_id");
+            $table->integer('user_id');
+            $table->string('fcm_token');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files');
+        Schema::dropIfExists('users_fcm');
     }
 };

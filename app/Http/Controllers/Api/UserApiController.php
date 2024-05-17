@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserFcm;
 use Illuminate\Http\Request;
 
 class UserApiController extends Controller
@@ -113,5 +114,33 @@ class UserApiController extends Controller
         }else {
             return array("status" => 404, "message" => "User not found");
         }
+    }
+
+
+    // Hàm lưu fcm token của user
+    public function saveFcmToken(Request $request) {
+        // Dữ liệu nhận về bao gồm user_id và fcm_token
+        $user_id = $request->user_id;
+        $fcm_token = $request->fcm_token;
+
+        // Tìm user_fcm theo user_id và fcm_token
+        $userFcm = UserFcm::where('user_id', $user_id)->where('fcm_token', $fcm_token)->first();
+
+        // Nếu không tìm thấy thì tạo mới
+        if (!$userFcm) {
+            UserFcm::create([
+                'user_id' => $user_id,
+                'fcm_token' => $fcm_token
+        ]);
+        // Nếu tìm thấy thì mà is_active = false thì cập nhật lại is_active = true
+        }else {
+            if ($userFcm->is_active == false) {
+                $userFcm->is_active = true;
+                $userFcm->save();
+            }
+        }
+        // Nếu tìm thấy mà is_active = true thì không làm gì cả
+        return array("status" => 200, "message" => "Fcm token saved");
+        // Trả về thông báo
     }
 }
