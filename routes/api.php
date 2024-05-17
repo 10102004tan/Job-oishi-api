@@ -81,9 +81,5 @@ Route::resource('notifications', NotificationController::class);
 Route::get("/user/{id}/job_criteria", [UserApiController::class, "getJobCriteria"])->name("get_job_criteria");
 Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCriteria"])->name("update_job_criteria");
 
-
 //api cho users_device với phương thức post
 Route::post('fcm', [UserApiController::class, "saveFcmToken"])->name('user.fcm');
-
-
-
