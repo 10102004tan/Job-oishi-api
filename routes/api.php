@@ -18,30 +18,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('company/job', [CompanyApiController::class, "getJob"]);
-Route::get('company/{id}', [CompanyApiController::class, "show"]);
-Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
+// Route::get('company/job', [CompanyApiController::class, "getJob"]);
+// Route::get('company/{id}', [CompanyApiController::class, "show"]);
+// Route::get('/job/{id}', [DetailJobAPIController::class, "show"]);
+// Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
+// Route::resource('company', CompanyApiController::class);
+
+//Upload file api
 Route::post('/upload', [UploadFileController::class, "store"]);
 
 
 // Company api routes
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
-Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
-Route::resource('company', CompanyApiController::class);
-Route::get('companies/id={id}', [CompanyAPIDBController::class, 'getDetail']);
+Route::get('company/{id}', [CompanyAPIDBController::class, 'getDetail']);
 Route::resource('companies', CompanyAPIDBController::class);
 
 
 // Job api routes
-Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
-Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
+Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 //Route::resource('jobs2', JobAPIDBController::class);
-
-
-Route::get('/company/job', [CompanyApiController::class, "getJob"]);
-Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
-
 
 Route::post("/jobs", [JobController::class, 'index']);
 

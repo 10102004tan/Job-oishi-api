@@ -15,25 +15,25 @@ class AppliedJobTableSeeder extends Seeder
     {
         DB::table('applied_job')->insert([
             [
-                'job_id' => 2033300,
+                'job_id' => 3300,
                 'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'job_id' => 2033295,
+                'job_id' => 3295,
                 'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'job_id' => 2033294,
+                'job_id' => 3294,
                 'user_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'job_id' => 2033205,
+                'job_id' => 3205,
                 'user_id' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
