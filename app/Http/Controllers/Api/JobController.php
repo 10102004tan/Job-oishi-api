@@ -40,7 +40,6 @@ class JobController extends Controller
         return $filteredData;
     }
 
-
     public function bookmark(Request $request){
         //add job to bookmark
         $job = new JobBookmark();

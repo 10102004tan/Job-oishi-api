@@ -48,8 +48,6 @@ Route::get("/jobs2", [JobAPIDBController::class, 'index']);
 // JOb search
 Route::get("/jobs/search/", [JobSearchController::class, 'search']);
 
-
-
 //bookmark start
 Route::prefix('jobs')->group(function () {
     Route::prefix('bookmark')->group(function () {
