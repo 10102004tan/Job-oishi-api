@@ -17,7 +17,7 @@ class JobsTableSeeder extends Seeder
 
          DB::table('jobs')->insert([
             [
-                'id' => 2033300,
+                'id' => 3300,
                 'title' => 'Project Manager',
                 'content' => 'Manage projects at Percas Game Studio',
                 'company_id' => 94708,
@@ -35,7 +35,7 @@ class JobsTableSeeder extends Seeder
                 'is_edit' => true,
             ],
             [
-                'id' => 2033295,
+                'id' => 3295,
                 'title' => 'Sr. Physical Design Engineer _TS030101-PhDesign',
                 'content' => 'Senior Physical Design Engineer at Talent Success',
                 'company_id' => 92937,
@@ -53,7 +53,7 @@ class JobsTableSeeder extends Seeder
                 'is_edit' => true,
             ],
             [
-                'id' => 2033294,
+                'id' => 3294,
                 'title' => 'REMOTE HOT JOBS - Business Analyst (ServiceNow)',
                 'content' => 'Remote Business Analyst position for Talent Success',
                 'company_id' => 92937,
@@ -71,7 +71,7 @@ class JobsTableSeeder extends Seeder
                 'is_edit' => true,
             ],
             [
-                'id' => 2033205,
+                'id' => 3205,
                 'title' => 'Senior UI/UX Designer, ZVAS',
                 'content' => 'Senior UI/UX Designer at Zalo',
                 'company_id' => 66848,
