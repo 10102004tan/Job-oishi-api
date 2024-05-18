@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('job_level')->nullable();
             $table->string('recruitment_process')->nullable();
             $table->string('salary_min')->nullable()->default('*');
+            $table->string('salary_value')->nullable()->default('ttt');
             $table->string('salary_max')->nullable()->default('*');
             $table->boolean('is_salary_visible')->default(false);
             $table->boolean('is_applied')->default(false);
