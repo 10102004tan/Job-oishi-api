@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('recruitment_process')->nullable();
             $table->string('salary_min')->nullable()->default('*');
             $table->string('salary_max')->nullable()->default('*');
+            
             $table->boolean('is_salary_visible')->default(false);
             $table->boolean('is_applied')->default(false);
             $table->integer('benefit_id')->nullable();

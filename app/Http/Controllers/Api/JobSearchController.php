@@ -107,8 +107,7 @@ class JobSearchController extends Controller
         $transformedData = $paginatedData->map(function ($job) {
             return [
                 'id' => $job['id'],
-                // 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                'title' => $job['title'],
+                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
                 'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
                 'image_logo' => $job['company']['image_logo'],

@@ -22,7 +22,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="company_id" id="company_{{ $company->id }}" value="{{ $company->id }}">
                 <label class="form-check-label" for="company_{{ $company->id }}">
-                    {{ $company->company_name }}
+                    {{ $company->display_name }}
                 </label>
             </div>
             @endforeach
@@ -49,9 +49,9 @@
                 <input type="checkbox" class="form-check-input" id="is_edit" name="is_edit" value="1">
             </div>
             <div class="col-4">
-                <label for="is_salary_value" class="form-check-label">Is Salary Value</label>
-                <input type="hidden" name="is_salary_value" value="0">
-                <input type="checkbox" class="form-check-input" id="is_salary_value" name="is_salary_value" value="1">
+                <label for="is_salary_visible" class="form-check-label">Is Salary Value</label>
+                <input type="hidden" name="is_salary_visible" value="0">
+                <input type="checkbox" class="form-check-input" id="is_salary_visible" name="is_salary_visible" value="1">
             </div>
             <div class="col-4">
                 <label for="is_applied" class="form-check-label">Is Applied</label>
