@@ -30,27 +30,7 @@ class JobSearchController extends Controller
             ];
         });
 
-        $filteredData = $filteredData->map(function ($job) {
-            $companyId = $job['company_id'];
-            $response = Http::get("https://api.topdev.vn/td/v2/companies/$companyId/jobs?fields[job]=id,title,content,benefits,contract_types_str,contract_types_ids,requirements,salary,responsibilities,company,skills_arr,skills_ids,experiences_str&fields[company]=products,news,tagline,addresses,benefits&ordering=newest_job&page_size=2&except_ids=2032583&page=1&locale=vi_VN");
-            $companyData = json_decode($response->getBody()->getContents(), true);
-
-
-            // Check if company data contains benefits, experiences_str, and contract_types_str
-            if (isset($companyData['data']) && is_array($companyData['data']) && count($companyData['data']) > 0) {
-                $company = $companyData['data'][0]; // Lấy job đầu tiên trong danh sách
-                $job['experiences_str'] = $company['experiences_str'] ?? '';
-                $job['contract_types_str'] = $company['contract_types_str'] ?? '';
-                $job['benefits'] = $company['benefits'] ?? [];
-            } else {
-                $job['experiences_str'] = '';
-                $job['contract_types_str'] = '';
-                $job['benefits'] = [];
-            }
-
-            return $job;
-        });
-
+        
         return response()->json($filteredData);
     }
 
@@ -127,8 +107,7 @@ class JobSearchController extends Controller
         $transformedData = $paginatedData->map(function ($job) {
             return [
                 'id' => $job['id'],
-                // 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                'title' => $job['title'],
+                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
                 'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
                 'image_logo' => $job['company']['image_logo'],
@@ -138,7 +117,7 @@ class JobSearchController extends Controller
                 'published' => $job['published']['since'],
                 'experiences_str' => $job['experiences_str'],
                 'contract_types_str' => $job['contract_types_str'],
-                'benefits' => $job['benefits']
+                // 'benefits' => $job['benefits']
             ];
         });
 
