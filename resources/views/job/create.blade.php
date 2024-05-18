@@ -49,9 +49,9 @@
                 <input type="checkbox" class="form-check-input" id="is_edit" name="is_edit" value="1">
             </div>
             <div class="col-4">
-                <label for="is_salary_visible" class="form-check-label">Is Salary Value</label>
-                <input type="hidden" name="is_salary_visible" value="0">
-                <input type="checkbox" class="form-check-input" id="is_salary_visible" name="is_salary_visible" value="1">
+                <label for="is_salary_value" class="form-check-label">Is Salary Value</label>
+                <input type="hidden" name="is_salary_value" value="0">
+                <input type="checkbox" class="form-check-input" id="is_salary_value" name="is_salary_visible" value="1">
             </div>
             <div class="col-4">
                 <label for="is_applied" class="form-check-label">Is Applied</label>
