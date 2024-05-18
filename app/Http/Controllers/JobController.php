@@ -44,7 +44,7 @@ class JobController extends Controller
         $job->experience = $request['experience'];
         $job->job_type_str = $request['job_type_str'];
         $job->is_edit = $request['is_edit'];
-        $job->is_salary_value = $request['is_salary_value'];
+        $job->is_salary_visible = $request['is_salary_visible'];
         $job->is_applied = $request['is_applied'];
         $job->save();
 
