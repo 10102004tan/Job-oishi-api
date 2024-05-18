@@ -64,10 +64,9 @@ class JobSearchController extends Controller
 
         ;
         
-        // Áp dụng bộ lọc làm từ xa (remote)
+        
         if ($remote === true || $remote === 'true' || $remote == 1) {
             $filteredData = $filteredData->filter(function ($job) {
-                // Kiểm tra xem tiêu đề của công việc có chứa các từ khóa như "remote", "work from home" hay không
                 $title = strtolower($job['title']);
                 $sort_address = strtolower($job['addresses']['sort_addresses']);
                 return strpos($title, 'remote') !== false || strpos($title, 'home') !== false || strpos($title, 'freelance') !== false || strpos($sort_address, 'remote') !== false;
@@ -75,7 +74,7 @@ class JobSearchController extends Controller
         } 
 
         $jobTypes = ['fulltime', 'part-time', 'internship', 'freelance'];
-        
+            
         // Áp dụng bộ lọc loại công việc (jobType)
         if ($jobType && in_array($jobType, $jobTypes)) {
             $filteredData = $filteredData->filter(function ($job) use ($jobType) {

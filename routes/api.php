@@ -33,7 +33,6 @@ Route::resource('companies', CompanyAPIDBController::class);
 
 
 // Job api routes
-Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
 Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 Route::resource('jobs2', JobAPIDBController::class);
@@ -46,8 +45,8 @@ Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail
 Route::post("/jobs", [JobController::class, 'index']);
 
 // JOb search
-Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
-Route::get("/sjobs", [JobSearchController::class, 'index']);
+Route::get("/jobs/search/", [JobSearchController::class, 'search']);
+Route::get("/jobs", [JobSearchController::class, 'index']);
 
 
 
