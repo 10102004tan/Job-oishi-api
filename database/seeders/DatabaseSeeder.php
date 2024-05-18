@@ -14,6 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call([
+            JobsTableSeeder::class,
+            CompaniesTableSeeder::class,
+            AppliedJobTableSeeder::class
+        ]);
+
+
         // User::factory(10)->create();
         DB::table('jobs')->insert([
             'title' => 'Công việc 1',
@@ -40,8 +47,7 @@ class DatabaseSeeder extends Seeder
             'title' => 'Công việc 3',
             'content' => 'Nội dung công việc 3',
             'experience' => "2",
-            'is_edit' => 0,
-            'company_id' => 1,
+            'company_id' => "111",
             'job_level' => 2,
             'salary_min' => '*',
             'salary_max' => '*'

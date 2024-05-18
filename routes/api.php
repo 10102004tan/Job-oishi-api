@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\JobSearchController;
 use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\AppliedJobController;
 use App\Http\Controllers\JobAppliedController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TestController;
@@ -69,7 +70,8 @@ Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
 // Applied Job
-Route::post('/applied', [JobAppliedController::class, "store"]);
+Route::post('/applied', [AppliedJobController::class, "store"]);
+Route::get('/applied-job/{id}', [AppliedJobController::class, 'show']);
 
 
 //notification start route resource
