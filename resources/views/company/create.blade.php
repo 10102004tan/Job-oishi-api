@@ -3,16 +3,16 @@
     <form action="{{ route('companies.store') }}" method="post">
         @csrf
         <div class="mb-3">
-            <label for="company_name" class="form-label">Company Name</label>
-            <input type="text" class="form-control" id="company_name" name="company_name">
-            @error('company_name')
+            <label for="display_name" class="form-label">Company Name</label>
+            <input type="text" class="form-control" id="display_name" name="display_name">
+            @error('display_name')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
         <div class="mb-3">
-            <label for="company_photo" class="form-label">Company Photo</label>
-            <textarea class="form-control" id="company_photo" name="company_photo"></textarea>
-            @error('company_photo')
+            <label for="image_logo" class="form-label">Company Photo</label>
+            <textarea class="form-control" id="image_logo" name="image_logo"></textarea>
+            @error('image_logo')
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
