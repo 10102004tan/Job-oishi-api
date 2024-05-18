@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use Illuminate\Support\Facades\Storage;
 
 class UploadFileController extends Controller
 {
@@ -30,16 +31,24 @@ class UploadFileController extends Controller
     public function store(Request $request)
     {
         // Lấy dữ liệu từ yêu cầu
+        $file = new File();
         $userId = $request->input('user_id'); // Lấy giá trị user_id từ yêu cầu
-        $file = $request->file('name'); // Lấy tệp PDF từ yêu cầu
+        $pdfFile = $request->file('pdf');
+        $uniquePdfFileName = "user_" . $userId . "_" . uniqid() . '.' . "pdf";
+        $pdfPath = $pdfFile->storeAs('public/pdfs', $uniquePdfFileName);
+        
+        // Tạo URL đầy đủ cho tệp PDF
+        $fullPdfUrl = url(Storage::url($pdfPath));
+        $file->user_id = $userId;
+        $file->url = $fullPdfUrl;
+        $file->save();
 
-        // Xử lý tệp PDF ở đây
-        $path = $file->store('pdfs');
+
 
         // Trả về phản hồi thành công hoặc thông tin khác
         return response()->json([
             'message' => 'File uploaded successfully',
-            'name' => $file
+            'name' => $fullPdfUrl,
         ]);
     }
 
