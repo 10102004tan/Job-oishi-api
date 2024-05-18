@@ -17,7 +17,7 @@ class JobController extends Controller
         $jobs = $jobAPIDBController->index($request);
         $page_size = 15;
         $page = $request->query('page', 1);
-        $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=$page_size&page=$page&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
+        $response = Http::get("https://api.topdev.vn/td/v2/jobs?ordering=newest_job&page_size=$page_size&page=$page&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
         $data = json_decode($response->getBody()->getContents(), true);
         $collection = collect($data['data']);
         // // // Xử lý dữ liệu tại đây...
