@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('company/job', [CompanyApiController::class, "getJob"]);
 Route::get('company/{id}', [CompanyApiController::class, "show"]);
-Route::get('/job/{id}', [DetailJobAPIController::class, "show"]);
+// Route::get('/job/{id}', [DetailJobAPIController::class, "show"]);
 Route::post('/upload', [UploadFileController::class, "store"]);
 
 
@@ -33,7 +33,7 @@ Route::resource('companies', CompanyAPIDBController::class);
 
 
 // Job api routes
-Route::get('jobs/{id}', [JobAPIDBController::class, 'getDetail']);
+Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 Route::resource('jobs2', JobAPIDBController::class);
 
