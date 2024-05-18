@@ -22,7 +22,7 @@
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="company_id" id="company_{{ $company->id }}" value="{{ $company->id }}">
                 <label class="form-check-label" for="company_{{ $company->id }}">
-                    {{ $company->company_name }}
+                    {{ $company->display_name }}
                 </label>
             </div>
             @endforeach

@@ -47,7 +47,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->is('benefits*') ? 'active' : '' }}" aria-current="page">
+                    <a href="{{ route('notifications.index') }}" class="nav-link {{ request()->is('notifications*') ? 'active' : '' }}" aria-current="page">
                         <i class="bi bi-basket2"></i>
                         Nofications
                     </a>
