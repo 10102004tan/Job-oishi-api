@@ -55,9 +55,7 @@ class JobController extends Controller
                 $mergedData = collect($jobs)->merge( $filteredData)->toArray();
                 return $mergedData;
             }
-           
-        }
-        else{
+           else{
             $filteredData = $jobs->map(function ($job) {
                 return [
                 'id' => $job['id'],
@@ -73,7 +71,9 @@ class JobController extends Controller
                 ];
             });
             return $filteredData;
+           }
         }
+        
     }
 
     private function calculateSimilarity($job, $criteria)
