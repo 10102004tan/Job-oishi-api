@@ -43,7 +43,7 @@ Route::get('/company/job', [CompanyApiController::class, "getJob"]);
 Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
 
 
-Route::post("/jobs", [JobController::class, 'index']);
+Route::get("/jobs", [JobController::class, 'index']);
 
 // JOb search
 Route::get("/sjobs/search/", [JobSearchController::class, 'search']);

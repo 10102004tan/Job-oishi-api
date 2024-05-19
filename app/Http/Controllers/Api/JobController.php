@@ -36,8 +36,8 @@ class JobController extends Controller
             ];
         });
 
-        //$mergedData = collect($jobs)->merge( $filteredData)->toArray();
-        return $filteredData;
+        $mergedData = collect($jobs)->merge( $filteredData)->toArray();
+        return $mergedData;
     }
 
 
