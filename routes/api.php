@@ -17,13 +17,6 @@ use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-// Route::get('company/job', [CompanyApiController::class, "getJob"]);
-// Route::get('company/{id}', [CompanyApiController::class, "show"]);
-// Route::get('/job/{id}', [DetailJobAPIController::class, "show"]);
-// Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
-// Route::resource('company', CompanyApiController::class);
-
 //Upload file api
 Route::post('/upload', [UploadFileController::class, "store"]);
 
@@ -37,26 +30,13 @@ Route::resource('companies', CompanyAPIDBController::class);
 // Job api routes
 Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
-// Route::resource('jobs2', JobAPIDBController::class);
 
 Route::post("/jobs", [JobController::class, 'index']);
-// Route::get("/jobs", [JobController::class, 'index']);
 
 // JOb search
 Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
 Route::get("/sjobs", [JobSearchController::class, 'index']);
 
-
-
-//bookmark start
-Route::prefix('jobs')->group(function () {
-    Route::prefix('bookmark')->group(function () {
-        Route::post("/", [JobController::class, 'bookmark'])->name('jobs.bookmark');
-        Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
-        Route::delete("/destroy", [JobController::class, 'destroyJobOnBookmark']);
-    });
-});
-//bookmark end
 
 // User api routes
 Route::post("/user/login", [UserApiController::class, "login"])->name("user_login");
@@ -72,7 +52,7 @@ Route::get("/user", [UserApiController::class, "index"]);
 Route::post('/applied', [AppliedJobController::class, "store"]);
 
 // Truy vấn những job đã applied của user nào đó
-Route::get('/applied-job/{id}', [AppliedJobController::class, 'index']);
+Route::post('/applied-job', [AppliedJobController::class, 'index']);
 
 
 //notification start route resource
