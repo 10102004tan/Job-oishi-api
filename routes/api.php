@@ -13,6 +13,7 @@ use App\Http\Controllers\AppliedJobController;
 use App\Http\Controllers\JobAppliedController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TestController;
+use App\Http\Resources\ApiResource;
 use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,9 @@ use Illuminate\Support\Facades\Route;
 // Route::resource('company', CompanyApiController::class);
 
 //Upload file api
-Route::post('/upload', [UploadFileController::class, "store"]);
+// Route::post('/upload', [UploadFileController::class, "store"]);
+// Route::post('/upload/{id}', [UploadFileController::class, "destroy"]);
+Route::apiResource('/upload', UploadFileController::class);
 
 
 // Company api routes
