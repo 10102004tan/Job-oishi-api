@@ -17,49 +17,27 @@ use GuzzleHttp\Psr7\UploadedFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('company/job', [CompanyApiController::class, "getJob"]);
-Route::get('company/{id}', [CompanyApiController::class, "show"]);
-Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
+//Upload file api
 Route::post('/upload', [UploadFileController::class, "store"]);
 
 
 // Company api routes
 Route::get('/company/job', [CompanyApiController::class, "getJob"]);
-Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
-Route::resource('company', CompanyApiController::class);
-Route::get('companies/id={id}', [CompanyAPIDBController::class, 'getDetail']);
+Route::get('company/{id}', [CompanyAPIDBController::class, 'getDetail']);
 Route::resource('companies', CompanyAPIDBController::class);
 
 
 // Job api routes
-Route::get('/job/id={id}', [DetailJobAPIController::class, "show"]);
-Route::get('jobs/id={id}', [JobAPIDBController::class, 'getDetail']);
+Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
-Route::resource('jobs2', JobAPIDBController::class);
 
 
-Route::get('/company/job', [CompanyApiController::class, "getJob"]);
-Route::get('/company/{id}', [CompanyApiController::class, "show"])->name("detail_company");
-
-
-Route::get("/jobs", [JobController::class, 'index']);
+Route::post("/jobs", [JobController::class, 'index']);
 
 // JOb search
 Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
 Route::get("/sjobs", [JobSearchController::class, 'index']);
 
-
-
-//bookmark start
-Route::prefix('jobs')->group(function () {
-    Route::prefix('bookmark')->group(function () {
-        Route::post("/", [JobController::class, 'bookmark'])->name('jobs.bookmark');
-        Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
-        Route::delete("/destroy", [JobController::class, 'destroyJobOnBookmark']);
-    });
-});
-//bookmark end
 
 // User api routes
 Route::post("/user/login", [UserApiController::class, "login"])->name("user_login");
@@ -70,8 +48,12 @@ Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
 // Applied Job
+
+// Hàm lưu user_id và  job_id nào trong bảng
 Route::post('/applied', [AppliedJobController::class, "store"]);
-Route::get('/applied-job/{id}', [AppliedJobController::class, 'show']);
+
+// Truy vấn những job đã applied của user nào đó
+Route::post('/applied-job', [AppliedJobController::class, 'index']);
 
 
 //notification start route resource
