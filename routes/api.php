@@ -37,7 +37,7 @@ Route::resource('companies', CompanyAPIDBController::class);
 // Job api routes
 Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
-//Route::resource('jobs2', JobAPIDBController::class);
+// Route::resource('jobs2', JobAPIDBController::class);
 
 Route::get("/jobs", [JobController::class, 'index']);
 Route::get("/jobs2", [JobAPIDBController::class, 'index']);
@@ -64,8 +64,12 @@ Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
 // Applied Job
+
+// Hàm lưu user_id và  job_id nào trong bảng
 Route::post('/applied', [AppliedJobController::class, "store"]);
-Route::get('/applied-job/{id}', [AppliedJobController::class, 'show']);
+
+// Truy vấn những job đã applied của user nào đó
+Route::get('/applied-job/{id}', [AppliedJobController::class, 'index']);
 
 
 //notification start route resource
