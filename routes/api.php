@@ -31,7 +31,6 @@ Route::resource('companies', CompanyAPIDBController::class);
 Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 
-
 Route::post("/jobs", [JobController::class, 'index']);
 
 // JOb search

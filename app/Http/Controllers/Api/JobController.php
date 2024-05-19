@@ -83,31 +83,30 @@ class JobController extends Controller
         // So sánh vị trí công việc
         $positionsArray = explode(",", $criteria['job_position']);
         foreach ($positionsArray as $value) {
-            if (strpos($job['title'],  $value) !== false) {
-                $score += 2;
+            if (strpos(strtolower($job['title']),  strtolower($value)) !== false) {
+                $score += 6;
             }
         }
 
         // So sánh địa điểm công việc
         $positionsArray = explode(",", $criteria['job_location']);
         foreach ($positionsArray as $value) {
-            if (strpos($job['addresses']['address_region_list'], $value) !== false) {
+            if (strpos(strtolower($job['addresses']['address_region_list']), strtolower($value)) !== false) {
                 $score += 3;
             }
         }
 
 
         // So sánh mức lương
-        $salaries = explode(',', $criteria['job_salary']);
-        $salaryMin = $salaries[0];
-        $salaryMax = $salaries[1];
-        foreach ($salaries as $salary) {
-            if ($job['salary']['value'] >= $salaryMin && $job['salary']['value'] <= $salaryMax) {
+        if ($job["is_salary_visible"]) {
+            $salaries = explode(',', $criteria['job_salary']);
+            $salaryMin = (int)$salaries[0];
+            $salaryMax = (int)$salaries[1];
+            $currentSalary = (int) $job['salary']['value'];
+            if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
                 $score += 1;
-                break;
             }
         }
-
         return $score;
     }
 
