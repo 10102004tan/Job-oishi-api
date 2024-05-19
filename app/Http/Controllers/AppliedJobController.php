@@ -13,16 +13,15 @@ class AppliedJobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(String $id)
+    public function index(Request $request)
     {
-        // $userId = $request->input('id');
-
-        // Query the applied jobs with the required fields
+        $userId = $request->id;
+        //Query the applied jobs with the required fields
         $appliedJobs = DB::table('applied_job')
             ->join('jobs', 'applied_job.job_id', '=', 'jobs.id')
             ->join('companies', 'jobs.company_id', '=', 'companies.id')
             ->join('addresses', 'companies.id', '=', 'addresses.company_id')
-            ->where('applied_job.user_id', $id)
+            ->where('applied_job.user_id', $userId)
             ->select(
                 'applied_job.job_id',
                 'applied_job.user_id',
@@ -45,7 +44,7 @@ class AppliedJobController extends Controller
             return $job;
         });
 
-        // Return the result as a JSON response
+        //Return the result as a JSON response
         return response()->json($appliedJobs);
     }
 
