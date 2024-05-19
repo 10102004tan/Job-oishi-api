@@ -34,20 +34,26 @@ class AppliedJobController extends Controller
             )
             ->get();
 
+
         // Truncate fields to 30 characters and append "..." if longer
-        $appliedJobs->transform(function ($job) {
-            $job->title = $this->truncateWithEllipsis($job->title, 30);
-            $job->company_name = $this->truncateWithEllipsis($job->company_name, 30);
-            $job->sort_addresses = $this->truncateWithEllipsis($job->sort_addresses, 30);
-            $job->is_salary_visible = (bool) $job->is_salary_visible;
-            $job->published = $this->formatTimeDifference($job->created_at);
-            return $job;
-        });
+      
 
         //Return the result as a JSON response
-        return response()->json($appliedJobs);
+        if ($appliedJobs->isEmpty()) {
+           return [];
+        }
+        else{
+            $appliedJobs->transform(function ($job) {
+                $job->title = $this->truncateWithEllipsis($job->title, 30);
+                $job->company_name = $this->truncateWithEllipsis($job->company_name, 30);
+                $job->sort_addresses = $this->truncateWithEllipsis($job->sort_addresses, 30);
+                $job->is_salary_visible = (bool) $job->is_salary_visible;
+                $job->published = $this->formatTimeDifference($job->created_at);
+                return $job;
+            });
+            return $appliedJobs;
+        }
     }
-
     /**
      * Show the form for creating a new resource.
      */
