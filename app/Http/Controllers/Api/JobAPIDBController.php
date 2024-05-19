@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
+use App\Models\JobCriteria;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Http;
@@ -19,8 +21,10 @@ class JobAPIDBController extends Controller
     {
         $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at', 'benefit_id'];
 
+        // User criteria
+        // $user_id = 4;
+        // $user = User::find($user_id);
         $page = $request->input('page', 1);
-
         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
             ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
             ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.address as sort_addresses')
@@ -34,10 +38,66 @@ class JobAPIDBController extends Controller
             return $job;
         });
 
-        // Thêm tham số trang vào URL
         $jobs->appends($request->only('page'));
 
+        $user = User::find($request->user_id);
+
+
+        if ($user) {
+            $job_criteria = $user->jobCriteria;
+            $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
+                $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
+                return $job;
+            })->sortByDesc('similarity')->values()->toArray();
+
+            usort($jobsArray, function($a, $b) {
+                return $b['similarity'] - $a['similarity'];
+            }); $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
+                $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
+                return $job;
+            })->sortByDesc('similarity')->values()->toArray();
+
+            usort($jobsArray, function($a, $b) {
+                return $b['similarity'] - $a['similarity'];
+            });
+            return response()->json($jobsArray);
+        }
+
         return response()->json($jobs->values());
+    }
+
+    private function calculateSimilarity($job, $criteria)
+    {
+        $score = 0;
+
+        // So sánh vị trí công việc
+        $positionsArray = explode(",", $criteria['job_position']);
+        foreach ($positionsArray as $value) {
+            if (strpos(strtolower($job['title']),  strtolower($value)) !== false) {
+                $score += 6;
+            }
+        }
+
+        // So sánh địa điểm công việc
+        $positionsArray = explode(",", $criteria['job_location']);
+        foreach ($positionsArray as $value) {
+            if (strpos(strtolower($job['sort_addresses']), strtolower($value)) !== false) {
+                $score += 3;
+            }
+        }
+
+
+        // So sánh mức lương
+        if ($job["is_salary_visible"]) {
+            $salaries = explode(',', $criteria['job_salary']);
+            $salaryMin = (int)$salaries[0];
+            $salaryMax = (int)$salaries[1];
+            $currentSalary = (int) $job['salary']['value'];
+            if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
+                $score += 1;
+            }
+        }
+        return $score;
     }
 
     /**
@@ -99,7 +159,7 @@ class JobAPIDBController extends Controller
                 $addresses[] = $addressInfo;
             }
 
-            // Lấy thông tin companay 
+            // Lấy thông tin companay
             $company = [
                 "id" => $dataAPI->company->id,
                 "display_name" => $dataAPI->company->display_name,
