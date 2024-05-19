@@ -31,11 +31,21 @@ Route::resource('companies', CompanyAPIDBController::class);
 Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 
-Route::post("/jobs", [JobController::class, 'index']);
+Route::get("/jobs", [JobController::class, 'index']);
+Route::get("/jobs2", [JobAPIDBController::class, 'index']);
 
 // JOb search
-Route::get("/sjobs/search/", [JobSearchController::class, 'search']);
-Route::get("/sjobs", [JobSearchController::class, 'index']);
+Route::get("/jobs/search/", [JobSearchController::class, 'search']);
+
+//bookmark start
+Route::prefix('jobs')->group(function () {
+    Route::prefix('bookmark')->group(function () {
+        Route::post("/", [JobController::class, 'bookmark'])->name('jobs.bookmark');
+        Route::post("/all", [JobController::class, 'getAllJobsBookmark']);
+        Route::delete("/destroy", [JobController::class, 'destroyJobOnBookmark']);
+    });
+});
+//bookmark end
 
 
 // User api routes

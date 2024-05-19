@@ -21,8 +21,8 @@ class JobSearchController extends Controller
                 'id' => $job['id'],
                 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
-                'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'image_logo' => $job['company']['image_logo'],
+                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+                'company_logo' => $job['company']['image_logo'],
                 'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
                 'salary_min' => $job['salary']['min'],
                 'salary_max' => $job['salary']['max'],
@@ -64,10 +64,9 @@ class JobSearchController extends Controller
 
         ;
         
-        // Áp dụng bộ lọc làm từ xa (remote)
+        
         if ($remote === true || $remote === 'true' || $remote == 1) {
             $filteredData = $filteredData->filter(function ($job) {
-                // Kiểm tra xem tiêu đề của công việc có chứa các từ khóa như "remote", "work from home" hay không
                 $title = strtolower($job['title']);
                 $sort_address = strtolower($job['addresses']['sort_addresses']);
                 return strpos($title, 'remote') !== false || strpos($title, 'home') !== false || strpos($title, 'freelance') !== false || strpos($sort_address, 'remote') !== false;
@@ -75,7 +74,7 @@ class JobSearchController extends Controller
         } 
 
         $jobTypes = ['fulltime', 'part-time', 'internship', 'freelance'];
-        
+            
         // Áp dụng bộ lọc loại công việc (jobType)
         if ($jobType && in_array($jobType, $jobTypes)) {
             $filteredData = $filteredData->filter(function ($job) use ($jobType) {
@@ -109,8 +108,8 @@ class JobSearchController extends Controller
                 'id' => $job['id'],
                 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
-                'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'image_logo' => $job['company']['image_logo'],
+                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+                'company_logo' => $job['company']['image_logo'],
                 'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
                 'salary_min' => $job['salary']['min'],
                 'salary_max' => $job['salary']['max'],
