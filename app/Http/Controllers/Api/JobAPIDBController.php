@@ -27,8 +27,9 @@ class JobAPIDBController extends Controller
         $page = $request->input('page', 1);
         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
             ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
-            ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.address as sort_addresses')
+            ->select('jobs.*', 'companies.display_name as display_name', 'companies.image_logo as image_logo', 'addresses.address as sort_address')
             ->paginate(10);
+
 
         $jobs->getCollection()->transform(function ($job) use ($makeHidden) {
             $job->makeHidden($makeHidden);
