@@ -67,8 +67,12 @@ Route::post("/user", [UserApiController::class, "store"])->name("create_user");
 Route::get("/user", [UserApiController::class, "index"]);
 
 // Applied Job
+
+// Hàm lưu user_id và  job_id nào trong bảng
 Route::post('/applied', [AppliedJobController::class, "store"]);
-Route::get('/applied-job/{id}', [AppliedJobController::class, 'show']);
+
+// Truy vấn những job đã applied của user nào đó
+Route::get('/applied-job/{id}', [AppliedJobController::class, 'index']);
 
 
 //notification start route resource
