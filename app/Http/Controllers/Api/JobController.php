@@ -55,25 +55,25 @@ class JobController extends Controller
                 $mergedData = collect($jobs)->merge( $filteredData)->toArray();
                 return $mergedData;
             }
-           
+          
         }
-        else{
-            $filteredData = $jobs->map(function ($job) {
-                return [
-                'id' => $job['id'],
-                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                'company_id' => $job['company']['id'],
-                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'company_logo' => $job['company']['image_logo'],
-                'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
-                'salary_min' => $job['salary']['min'],
-                'salary_max' => $job['salary']['max'],
-                'is_salary_visible'=> $job['is_salary_visible'],
-                'published' => $job['published']['since'],
-                ];
-            });
-            return $filteredData;
-        }
+
+        $filteredData = $jobs->map(function ($job) {
+            return [
+            'id' => $job['id'],
+            'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
+            'company_id' => $job['company']['id'],
+            'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+            'company_logo' => $job['company']['image_logo'],
+            'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
+            'salary_min' => $job['salary']['min'],
+            'salary_max' => $job['salary']['max'],
+            'is_salary_visible'=> $job['is_salary_visible'],
+            'published' => $job['published']['since'],
+            ];
+        });
+        return $filteredData;
+        
     }
 
     private function calculateSimilarity($job, $criteria)
@@ -83,30 +83,31 @@ class JobController extends Controller
         // So sánh vị trí công việc
         $positionsArray = explode(",", $criteria['job_position']);
         foreach ($positionsArray as $value) {
-            if (strpos(strtolower($job['title']),  strtolower($value)) !== false) {
-                $score += 6;
+            if (strpos($job['title'],  $value) !== false) {
+                $score += 2;
             }
         }
 
         // So sánh địa điểm công việc
         $positionsArray = explode(",", $criteria['job_location']);
         foreach ($positionsArray as $value) {
-            if (strpos(strtolower($job['addresses']['address_region_list']), strtolower($value)) !== false) {
+            if (strpos($job['addresses']['address_region_list'], $value) !== false) {
                 $score += 3;
             }
         }
 
 
         // So sánh mức lương
-        if ($job["is_salary_visible"]) {
-            $salaries = explode(',', $criteria['job_salary']);
-            $salaryMin = (int)$salaries[0];
-            $salaryMax = (int)$salaries[1];
-            $currentSalary = (int) $job['salary']['value'];
-            if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
+        $salaries = explode(',', $criteria['job_salary']);
+        $salaryMin = $salaries[0];
+        $salaryMax = $salaries[1];
+        foreach ($salaries as $salary) {
+            if ($job['salary']['value'] >= $salaryMin && $job['salary']['value'] <= $salaryMax) {
                 $score += 1;
+                break;
             }
         }
+
         return $score;
     }
 

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'time_starting_work',
         'country',
         'city',
+        'phone'
     ];
 
     /**
