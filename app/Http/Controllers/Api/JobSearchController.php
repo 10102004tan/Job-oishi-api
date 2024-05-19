@@ -45,7 +45,6 @@ class JobSearchController extends Controller
         $page = $request->query('page', 1); 
         $page_size = $request->query('page_size', 10);
 
-   
         // Gửi yêu cầu đến API TopDev với các tham số
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=1000&locale=vi_VN&fields[job]=id,company,title,salary,addresses,published,contract_types_str,benefits,experiences_str");
 
@@ -60,11 +59,8 @@ class JobSearchController extends Controller
             });
         } else {
             $filteredData = $collection;
-        }
+        };
 
-        ;
-        
-        
         if ($remote === true || $remote === 'true' || $remote == 1) {
             $filteredData = $filteredData->filter(function ($job) {
                 $title = strtolower($job['title']);
@@ -86,9 +82,7 @@ class JobSearchController extends Controller
 
 
         if ($sortBy) {
-            // Thực hiện bộ lọc sắp xếp
-            // Mới, cũ
-            // Ví dụ: $filteredData = $filteredData->sortBy($sortBy);
+            
         }
 
         $experiences = ['1 năm', "2 năm", "3 năm", "5 năm", "10 năm"];
