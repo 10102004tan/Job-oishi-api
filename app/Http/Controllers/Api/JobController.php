@@ -55,24 +55,24 @@ class JobController extends Controller
                 $mergedData = collect($jobs)->merge( $filteredData)->toArray();
                 return $mergedData;
             }
-           else{
-            $filteredData = $jobs->map(function ($job) {
-                return [
-                'id' => $job['id'],
-                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                'company_id' => $job['company']['id'],
-                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'company_logo' => $job['company']['image_logo'],
-                'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
-                'salary_min' => $job['salary']['min'],
-                'salary_max' => $job['salary']['max'],
-                'is_salary_visible'=> $job['is_salary_visible'],
-                'published' => $job['published']['since'],
-                ];
-            });
-            return $filteredData;
-           }
+          
         }
+
+        $filteredData = $jobs->map(function ($job) {
+            return [
+            'id' => $job['id'],
+            'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
+            'company_id' => $job['company']['id'],
+            'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+            'company_logo' => $job['company']['image_logo'],
+            'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
+            'salary_min' => $job['salary']['min'],
+            'salary_max' => $job['salary']['max'],
+            'is_salary_visible'=> $job['is_salary_visible'],
+            'published' => $job['published']['since'],
+            ];
+        });
+        return $filteredData;
         
     }
 
