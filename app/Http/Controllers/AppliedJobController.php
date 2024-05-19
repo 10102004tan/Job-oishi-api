@@ -23,26 +23,26 @@ class AppliedJobController extends Controller
             ->join('addresses', 'companies.id', '=', 'addresses.company_id')
             ->where('applied_job.user_id', $userId)
             ->select(
-                'applied_job.job_id',
+                'applied_job.job_id as id',
                 'applied_job.user_id',
                 'jobs.title',
                 'companies.display_name as company_name',
-                'addresses.address as sort_addresses',
                 'companies.image_logo as company_logo',
+                'addresses.province as sort_addresses',
                 'jobs.is_salary_visible',
                 'jobs.created_at'
             )
             ->get();
 
 
+
         // Truncate fields to 30 characters and append "..." if longer
-      
+
 
         //Return the result as a JSON response
         if ($appliedJobs->isEmpty()) {
-           return [];
-        }
-        else{
+            return [];
+        } else {
             $appliedJobs->transform(function ($job) {
                 $job->title = $this->truncateWithEllipsis($job->title, 30);
                 $job->company_name = $this->truncateWithEllipsis($job->company_name, 30);
@@ -91,7 +91,6 @@ class AppliedJobController extends Controller
      */
     public function show(String $id)
     {
-        
     }
 
     private function truncateWithEllipsis($string, $length)

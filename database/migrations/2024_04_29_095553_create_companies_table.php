@@ -19,9 +19,8 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->text('tagline')->nullable();
             $table->string('company_size')->nullable();
-            // $table->string('address_region_id')->nullable();
             $table->integer('num_job_openings')->nullable();
-            $table->string('nationality_id')->nullable();
+            $table->string('industries_arr')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });

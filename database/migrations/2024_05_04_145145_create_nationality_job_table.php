@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('nationalities', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('national')->nullable();
-            $table->string('flag')->nullable();
+        Schema::create('job_nationality', function (Blueprint $table) {
+            $table->integer('nationality_id');
+            $table->integer('job_id');
+            $table->primary(['nationality_id', 'job_id']);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('nationalities');
+        Schema::dropIfExists('job_nationality');
     }
 };
