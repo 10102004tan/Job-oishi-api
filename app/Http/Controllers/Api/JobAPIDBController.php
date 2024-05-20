@@ -75,7 +75,7 @@ class JobAPIDBController extends Controller
 
         $provinceNames = array_map(function ($province) {
             $name = $province['name'];
-            $name = preg_replace('/^(Tỉnh|Thành phố) /', '', $name);
+           
             return $name;
         }, $data);
 
