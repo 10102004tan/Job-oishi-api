@@ -40,7 +40,7 @@ class JobAPIDBController extends Controller
             return $job;
         });
 
-        $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang'];
+        $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang', 'Quy Nhơn', 'Đồng Nai', 'Hải Phòng', 'Cần Thơ'];
         
         // Áp dụng bộ lọc loại công việc (city)
         if ($city && in_array($city, $cities)) {

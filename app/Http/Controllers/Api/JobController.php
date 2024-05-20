@@ -15,6 +15,7 @@ class JobController extends Controller
 
     public function index(Request $request)
     {
+        $city = $request->query('city');
         $jobAPIDBController = new JobAPIDBController();
         $jobs = $jobAPIDBController->index($request);
         $page_size = 15;
@@ -24,6 +25,7 @@ class JobController extends Controller
         $jobs = collect($data['data']);
 
         // // // Xử lý dữ liệu tại đây...
+        
         // Xử lý lọc công việc theo tiêu chí của người dùng
         $user = User::find($request->user_id);
         if ($user) {
@@ -58,6 +60,7 @@ class JobController extends Controller
           
         }
 
+
         $filteredData = $jobs->map(function ($job) {
             return [
             'id' => $job['id'],
@@ -72,6 +75,15 @@ class JobController extends Controller
             'published' => $job['published']['since'],
             ];
         });
+        $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang'];
+        
+        // Áp dụng bộ lọc loại công việc (city)
+        if ($city && in_array($city, $cities)) {
+            $filteredData = $filteredData->filter(function ($job) use ($city) {
+                $city = strtolower($city);
+                return stripos($job['sort_addresses'], $city) !== false;
+            });
+        }
         return $filteredData;
         
     }
