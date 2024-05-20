@@ -116,6 +116,7 @@ class JobAPIDBController extends Controller
             dd($criteria['job_salary']);
             if (count($salaries) > 1) {
 
+
                 $salaryMin = (int)$salaries[0];
                 $salaryMax = (int)$salaries[1];
                 $currentSalary = (int) $job['salary']['value'];
@@ -135,14 +136,60 @@ class JobAPIDBController extends Controller
     {
         $job = Job::with(['company', 'benefits', 'nationalities', 'skills'])->find($id);
 
-        if ($job != null) {
-            if ($job->is_edit != 0) {
+        if ($job !== null) {
+            if ($job->is_edit !== 0) {
+                // Hide the company_id attribute
                 $job->makeHidden(['company_id']);
 
-                $job->is_applied = $job->is_applied ? true : false;
-                $job->is_salary_visible = $job->is_salary_visible ? true : false;
-                $job->is_edit = $job->is_edit ? true : false;
-                return response()->json($job);
+                // Transform specific attributes to boolean
+                $job->is_applied = (bool)$job->is_applied;
+                $job->is_salary_visible = (bool)$job->is_salary_visible;
+                $job->is_edit = (bool)$job->is_edit;
+
+                // Prepare the response data
+                $response = [
+                    'id' => $job->id,
+                    'title' => $job->title,
+                    'content' => $job->content,
+                    'requirements' => $job->requirements,
+                    'responsibilities' => $job->responsibilities,
+                    'company' => [
+                        'id' => $job->company->id,
+                        'display_name' => $job->company->display_name,
+                        'image_logo' => $job->company->image_logo,
+                        'description' => $job->company->description,
+                        'website' => $job->company->website,
+                        'tagline' => $job->company->tagline,
+                        'company_size' => $job->company->company_size,
+                        'addresses' => $job->company->address->map(function ($address) {
+                            return [
+                                'street' => $address->street,
+                                'ward' => $address->ward,
+                                'district' => $address->district,
+                                'province' => $address->province,
+                            ];
+                        })
+                    ],
+                    'skills' => $job->skills->pluck('skill_name'), // Assuming 'skills' have a 'name' attribute
+                    'experience' => $job->experience,
+                    'job_types_str' => $job->job_types_str,
+                    'job_level' => $job->job_level,
+                    'recruitment_process' => [$job->recruitment_process],
+                    'is_salary_visible' => $job->is_salary_visible,
+                    'salary_value' => $job->is_salary_visible ? $job->salary_value : null,
+                    'benefits' => $job->benefits->map(function ($benefit) {
+                        return [
+                            'icon' => $benefit->icon,
+                            'value' => $benefit->value,
+                        ];
+                    }),
+                    'is_edit' => $job->is_edit,
+                    'is_applied' => $job->is_applied,
+                    'modified' => [
+                    ],
+                ];
+
+                return response()->json($response);
             }
         } else {
             $response = Http::get('https://api.topdev.vn/td/v2/jobs/' . $id . '?fields[job]=id,title,content,benefits,contract_types_str,contract_types_ids,requirements,salary,responsibilities,company,skills_arr,skills_ids,experiences_str,experiences_ids,experiences_arr,job_types_str,job_types_arr,job_types_ids,job_levels_str,job_levels_ids,addresses,detail_url,job_url,modified,refreshed,slug,is_applied,is_followed,meta_title,meta_description,meta_keywords,schema_job_posting,features,other_supports,recruiment_process,status_display,image_thumbnail,blog_tags,blog_posts,sidebar_image_banner_url,sidebar_image_link,is_free,is_basic,is_basic_plus,is_distinction&fields[company]=products,news,tagline,website,company_size,social_network,addresses,nationalities_arr,skills_ids,industries_arr,industries_ids,benefits,description,image_galleries,num_job_openings,faqs,slug,recruitment_process&locale=vi_VN');
