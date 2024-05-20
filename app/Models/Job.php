@@ -26,4 +26,12 @@ class Job extends Model
         return $this->belongsToMany(Benefit::class);
     }
 
+    public function nationalities() : BelongsToMany {
+        return $this->belongsToMany(Nationality::class);
+    }
+
+    public function skills() : BelongsToMany {
+        return $this->belongsToMany(Skill::class, 'skill_job');
+    }
+
 }

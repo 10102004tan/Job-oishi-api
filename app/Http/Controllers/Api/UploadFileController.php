@@ -32,15 +32,24 @@ class UploadFileController extends Controller
     {
         // Lấy dữ liệu từ yêu cầu
         $file = new File();
-        $userId = $request->input('user_id'); // Lấy giá trị user_id từ yêu cầu
+        $userId = $request->input('user_id');
+        $fileName =$request->input('file_name');
+        $fileSize = $request->input('file_size');
+        $upload_at = $request->input('upload_at');
+
         $pdfFile = $request->file('pdf');
+       
         $uniquePdfFileName = "user_" . $userId . "_" . uniqid() . '.' . "pdf";
         $pdfPath = $pdfFile->storeAs('public/pdfs', $uniquePdfFileName);
         
         // Tạo URL đầy đủ cho tệp PDF
         $fullPdfUrl = url(Storage::url($pdfPath));
+
         $file->user_id = $userId;
         $file->url = $fullPdfUrl;
+        $file->file_name = $fileName;
+        $file->file_size = $fileSize;
+        $file->upload_at = $upload_at;
         $file->save();
 
 
@@ -48,16 +57,17 @@ class UploadFileController extends Controller
         // Trả về phản hồi thành công hoặc thông tin khác
         return response()->json([
             'message' => 'File uploaded successfully',
-            'name' => $fullPdfUrl,
+            'name' => $file->file_name  . " " . $file->file_size,
         ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $userId)
     {
-        //
+        $file = File::where('user_id', $userId)->firstOrFail();
+        return $file;
     }
 
     /**
@@ -79,8 +89,27 @@ class UploadFileController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $userId)
     {
-        //
+        $file = File::where('user_id', $userId)->firstOrFail();
+
+        $fullFilePath = $file->url;
+
+    // Loại bỏ phần đầu /storage để có đường dẫn tương đối
+    $relativeFilePath = ltrim(parse_url($fullFilePath, PHP_URL_PATH), '/');
+
+    // Điều chỉnh đường dẫn để tương thích với hệ thống file của Laravel
+    $storagePath = str_replace('storage/', 'public/', $relativeFilePath);
+
+    // Xóa file từ hệ thống file nếu nó tồn tại
+    if (Storage::exists($storagePath)) {
+        Storage::delete($storagePath);
+    }
+
+        $file->delete();
+        return response()->json([
+            'message' => 'File deleted successfully',
+            'name' => $relativeFilePath  . " " .  $storagePath,
+        ]);
     }
 }

@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->integer('company_id')->nullable();
-            $table->text('address')->nullable();
-            // $table->text('district')->nullable();
-            // $table->text('province')->nullable();
+            $table->String('street')->nullable();
+            $table->text('ward')->nullable();
+            $table->string('district')->nullable();
+            $table->String('province')->nullable();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });

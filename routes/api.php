@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 //Upload file api
-Route::post('/upload', [UploadFileController::class, "store"]);
+Route::apiResource('/upload', UploadFileController::class);
 
 
 // Company api routes

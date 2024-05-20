@@ -14,6 +14,9 @@ return new class extends Migration
             $table->id();
             $table->string("url");
             $table->integer("user_id");
+            $table->string("file_name");
+            $table->string("file_size");
+            $table->string("upload_at");
             $table->timestamps();
         });
     }
