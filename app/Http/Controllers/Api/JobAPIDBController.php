@@ -74,7 +74,7 @@ class JobAPIDBController extends Controller
         $data = $responseCity->json();
 
         $provinceNames = array_map(function ($province) {
-            $name = strtolower( $province['name']);
+            $name = strtolower($province['name']);
             return $name;
         }, $data);
         $city = strtolower($city);
