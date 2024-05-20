@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('recruitment_process')->nullable();
             $table->boolean('is_salary_visible')->nullable()->default(false);
             $table->string('salary_value')->nullable()->default('ttt');
+            $table->string('salary_max')->nullable()->default('*');
+            $table->string('salary_min')->nullable()->default('*');
             $table->boolean('is_edit')->default(true);
             $table->boolean('is_applied')->default(false);
             $table->timestamp('created_at')->useCurrent()->nullable();

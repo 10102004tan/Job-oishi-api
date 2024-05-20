@@ -12,9 +12,6 @@ use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\AppliedJobController;
 use App\Http\Controllers\JobAppliedController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\TestController;
-use GuzzleHttp\Psr7\UploadedFile;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 //Upload file api
