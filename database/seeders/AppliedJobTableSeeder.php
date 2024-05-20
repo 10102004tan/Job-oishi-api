@@ -226,26 +226,52 @@ class AppliedJobTableSeeder extends Seeder
             ],
         ]);
 
-        DB::table('job_nationality')->insert([
+        DB::table('company_nationality')->insert([
             [
                 'nationality_id' => 1, // ID của quốc gia Vietnam
-                'job_id' => 3300, // ID của công việc Project Manager
+                'company_id' => 708, // ID của công việc Project Manager
             ],
             [
                 'nationality_id' => 2, // ID của quốc gia United States
-                'job_id' => 3300, // ID của công việc Project Manager
+                'company_id' => 708, // ID của công việc Project Manager
             ],
 
             [
                 'nationality_id' => 3, // ID của quốc gia Vietnam
-                'job_id' => 3295, // ID của công việc Project Manager
+                'company_id' => 848, // ID của công việc Project Manager
             ],
             [
                 'nationality_id' => 4, // ID của quốc gia United States
-                'job_id' => 3294, // ID của công việc Project Manager
+                'company_id' => 937, // ID của công việc Project Manager
             ],
         ]);
         
+        DB::table('industries')->insert([
+            ['industry_name' => 'Software Development'],
+            ['industry_name' => 'Cybersecurity'],
+            ['industry_name' => 'Data Science'],
+            ['industry_name' => 'Cloud Computing'],
+            ['industry_name' => 'Artificial Intelligence'],
+        ]);
+
+        DB::table('industry_company')->insert([
+            [
+                'industry_id' => 1, // ID của ngành công nghệ
+                'company_id' => 708, // ID của công ty Project Manager
+            ],
+            [
+                'industry_id' => 2, // ID của ngành công nghệ
+                'company_id' => 708, // ID của công ty Project Manager
+            ],
+            [
+                'industry_id' => 3, // ID của ngành công nghệ
+                'company_id' => 848, // ID của công ty Project Manager
+            ],
+            [
+                'industry_id' => 4, // ID của ngành công nghệ
+                'company_id' => 937, // ID của công ty Project Manager
+            ],
+        ]);
         
     }
 }

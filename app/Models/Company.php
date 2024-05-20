@@ -30,4 +30,12 @@ class Company extends Model
     public function address() : HasMany {
         return $this->hasMany(Address::class);
     }
+
+    public function nationalities() : BelongsToMany {
+        return $this->BelongsToMany(Nationality::class);
+    }
+
+    public function industries() : BelongsToMany {
+        return $this->BelongsToMany(Industry::class, 'industry_company');
+    }
 }
