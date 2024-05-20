@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('job_nationality', function (Blueprint $table) {
+        Schema::create('company_nationality', function (Blueprint $table) {
             $table->integer('nationality_id');
-            $table->integer('job_id');
-            $table->primary(['nationality_id', 'job_id']);
+            $table->integer('company_id');
+            $table->primary(['nationality_id', 'company_id']);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
         });

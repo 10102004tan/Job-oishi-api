@@ -58,15 +58,48 @@ class CompanyAPIDBController extends Controller
     public function getDetail(string $id)
     {
 
-        $company = Company::with('benefits', 'address')->find($id);
-        if ($company != null) {
-            if (!$company) {
-                return response()->json(['error' => 'Company not found'], 404);
-            }
+        $company = Company::with(['benefits', 'address', 'industries'])->find($id);
 
+        if ($company != null) {
+
+            // Hide unnecessary fields
             $company->makeHidden(['benefit_id']);
 
-            return response()->json($company);
+            // Prepare the response data
+            $response = [
+                'id' => $company->id,
+                'display_name' => $company->display_name,
+                'image_logo' => $company->image_logo,
+                'description' => $company->description,
+                'website' => $company->website,
+                'tagline' => $company->tagline,
+                'company_size' => $company->company_size,
+                'addresses' => $company->address->map(function ($address) {
+                    return [
+                        'street' => $address->street,
+                        'ward' => $address->ward,
+                        'district' => $address->district,
+                        'province' => $address->province,
+                    ];
+                }),
+                'num_job_openings' => $company->num_job_openings,
+                'image_galleries' => $company->image_galleries,
+                'benefits' => $company->benefits->map(function ($benefit) {
+                    return [
+                        'value' => $benefit->value,
+                        'icon' => $benefit->icon,
+                    ];
+                }),
+                'nationalities' => $company->nationalities->map(function ($nationality) {
+                    return [
+                        'national' => $nationality->national,
+                        'flag' => $nationality->flag,
+                    ];
+                }),
+                'industries_arr' => $company->industries->pluck('industry_name'),
+            ];
+
+            return response()->json($response);
         } else {
             $response = Http::get("https://api.topdev.vn/td/v2/companies/$id?fields[company]=products,news,tagline,website,company_size,social_network,addresses,nationalities_arr,skills_ids,industries_arr,industries_ids,benefits,description,image_galleries,num_job_openings,faqs,slug,recruitment_process&ordering=newest_job&page_size=2&except_ids=2032582&page=1&locale=vi_VN");
 
