@@ -21,8 +21,8 @@ class JobSearchController extends Controller
                 'id' => $job['id'],
                 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
-                'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'image_logo' => $job['company']['image_logo'],
+                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+                'company_logo' => $job['company']['image_logo'],
                 'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
                 'salary_min' => $job['salary']['min'],
                 'salary_max' => $job['salary']['max'],
@@ -45,7 +45,6 @@ class JobSearchController extends Controller
         $page = $request->query('page', 1); 
         $page_size = $request->query('page_size', 10);
 
-   
         // Gửi yêu cầu đến API TopDev với các tham số
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=1000&locale=vi_VN&fields[job]=id,company,title,salary,addresses,published,contract_types_str,benefits,experiences_str");
 
@@ -60,11 +59,8 @@ class JobSearchController extends Controller
             });
         } else {
             $filteredData = $collection;
-        }
+        };
 
-        ;
-        
-        // Áp dụng bộ lọc làm từ xa (remote)
         if ($remote === true || $remote === 'true' || $remote == 1) {
             $filteredData = $filteredData->filter(function ($job) {
                 // Kiểm tra xem tiêu đề của công việc có chứa các từ khóa như "remote", "work from home" hay không
@@ -87,9 +83,7 @@ class JobSearchController extends Controller
 
 
         if ($sortBy) {
-            // Thực hiện bộ lọc sắp xếp
-            // Mới, cũ
-            // Ví dụ: $filteredData = $filteredData->sortBy($sortBy);
+            
         }
 
         $experiences = ['1 năm', "2 năm", "3 năm", "5 năm", "10 năm"];
@@ -109,8 +103,8 @@ class JobSearchController extends Controller
                 'id' => $job['id'],
                 'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
                 'company_id' => $job['company']['id'],
-                'display_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'image_logo' => $job['company']['image_logo'],
+                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+                'company_logo' => $job['company']['image_logo'],
                 'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
                 'salary_min' => $job['salary']['min'],
                 'salary_max' => $job['salary']['max'],
