@@ -54,14 +54,17 @@ class JobAPIDBController extends Controller
         $jobsP = $jobs->forPage($page, 10);
         
         
-
-        
         $user = User::find($request->user_id);
 
 
         if ($user) {
             $job_criteria = $user->jobCriteria;
+            if ($job_criteria['job_salary'] == null) {
+                return response()->json($jobs->values());
+            }
+            
             $jobsArray = $jobsP->map(function ($job) use ($job_criteria) {
+                // dd($job_criteria);
                 $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
                 return $job;
             })->sortByDesc('similarity')->values()->toArray();
@@ -72,8 +75,10 @@ class JobAPIDBController extends Controller
 
             return response()->json($jobsArray);
         }
+        
 
         return response()->json($jobs->values());
+        // return [];
     }
 
 
@@ -101,11 +106,15 @@ class JobAPIDBController extends Controller
         // So sánh mức lương
         if ($job["is_salary_visible"]) {
             $salaries = explode(',', $criteria['job_salary']);
-            $salaryMin = (int)$salaries[0];
-            $salaryMax = (int)$salaries[1];
-            $currentSalary = (int) $job['salary']['value'];
-            if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
-                $score += 1;
+            dd($criteria['job_salary']);
+            if (count($salaries) > 1) {
+                
+                $salaryMin = (int)$salaries[0];
+                $salaryMax = (int)$salaries[1];
+                $currentSalary = (int) $job['salary']['value'];
+                if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
+                    $score += 1;
+                }
             }
         }
         return $score;

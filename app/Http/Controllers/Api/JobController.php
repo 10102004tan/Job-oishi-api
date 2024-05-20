@@ -30,8 +30,10 @@ class JobController extends Controller
         $user = User::find($request->user_id);
         if ($user) {
             $job_criteria = $user->jobCriteria;
-            if ($job_criteria){
+            if ($job_criteria['job_salary'] != null) {
+           
                 $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
+                    // dd($job_criteria);
                     $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
                     return $job;
                 })->sortByDesc('similarity')->values()->toArray();
@@ -57,9 +59,9 @@ class JobController extends Controller
                 $mergedData = collect($jobs)->merge( $filteredData)->toArray();
                 return $mergedData;
             }
-          
+           
         }
-
+        
 
         $filteredData = $jobs->map(function ($job) {
             return [
@@ -75,6 +77,7 @@ class JobController extends Controller
             'published' => $job['published']['since'],
             ];
         });
+
         $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang'];
         
         // Áp dụng bộ lọc loại công việc (city)
@@ -84,7 +87,7 @@ class JobController extends Controller
                 return stripos($job['sort_addresses'], $city) !== false;
             });
         }
-        return $filteredData;
+        return $filteredData->values();
         
     }
 

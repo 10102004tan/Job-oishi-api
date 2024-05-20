@@ -33,7 +33,7 @@ Route::resource('benefits', BenefitAPIDBController::class);
 
 
 Route::post("/jobs", [JobController::class, 'index']);
-Route::get("/jobs2", [JobAPIDBController::class, 'index']);
+Route::post("/jobs2", [JobAPIDBController::class, 'index']);
 
 // JOb search
 Route::get("/jobs/search/", [JobSearchController::class, 'search']);
