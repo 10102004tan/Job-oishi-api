@@ -74,21 +74,17 @@ class JobAPIDBController extends Controller
         $data = $responseCity->json();
 
         $provinceNames = array_map(function ($province) {
-            $name = $province['name'];
-           
+            $name = strtolower( $province['name']);
             return $name;
         }, $data);
-
-        // dd($provinceNames);
-
-        // Áp dụng bộ lọc loại công việc (city)
+        $city = strtolower($city);
+         
         if ($city && in_array($city, $provinceNames)) {
             $jobs = $jobs->filter(function ($job) use ($city) {
-                $city = strtolower($city);
+             
                 return stripos($job['sort_addresses'], $city) !== false;
             });
         }
-
         return response()->json($jobs->values());
     }
 
