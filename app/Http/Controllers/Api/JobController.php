@@ -54,6 +54,7 @@ class JobController extends Controller
                     'salary_max' => $job['salary']['max'],
                     'is_salary_visible'=> $job['is_salary_visible'],
                     'published' => $job['published']['since'],
+                    'provicene' => $job['addresses']['address_region_list']
                     ];
                 });
                 $mergedData = collect($jobs)->merge( $filteredData)->toArray();
@@ -75,18 +76,28 @@ class JobController extends Controller
             'salary_max' => $job['salary']['max'],
             'is_salary_visible'=> $job['is_salary_visible'],
             'published' => $job['published']['since'],
+            'provicene' => $job['addresses']['address_region_list']
             ];
         });
 
-        $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang'];
+        $responseCity = Http::get('https://vietnam-administrative-division-json-server-swart.vercel.app/province');
+
+        $data = $responseCity->json();
         
+        $provinceNames = array_map(function($province) {
+            $name = strtolower($province['name']);
+            return $name;
+        }, $data);
+
         // Áp dụng bộ lọc loại công việc (city)
-        if ($city && in_array($city, $cities)) {
+        $city = strtolower($city);
+        if ($city && in_array($city, $provinceNames)) {
             $filteredData = $filteredData->filter(function ($job) use ($city) {
-                $city = strtolower($city);
-                return stripos($job['sort_addresses'], $city) !== false;
+            
+                return stripos($job['provicene'], $city) !== false;
             });
         }
+        
         return $filteredData->values();
         
     }

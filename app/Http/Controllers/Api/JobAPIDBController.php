@@ -27,7 +27,10 @@ class JobAPIDBController extends Controller
         $page = $request->query('page', 1);
         $city = $request->query('city');
         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
-            ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
+            ->leftJoin('addresses', function ($join) {
+                $join->on('jobs.company_id', '=', 'addresses.company_id')
+                    ->whereRaw('addresses.id = (select id from addresses where addresses.company_id = jobs.company_id limit 1)');
+            })
             ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.province as sort_addresses')
             ->paginate(10);
 
@@ -40,18 +43,8 @@ class JobAPIDBController extends Controller
             return $job;
         });
 
-        $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang', 'Quy Nhơn', 'Đồng Nai', 'Hải Phòng', 'Cần Thơ'];
 
-        // Áp dụng bộ lọc loại công việc (city)
-        if ($city && in_array($city, $cities)) {
-            $jobs = $jobs->filter(function ($job) use ($city) {
-                $city = strtolower($city);
-                return stripos($job['sort_addresses'], $city) !== false;
-            });
-        }
-
-
-        $jobsP = $jobs->forPage($page, 10);
+        $jobs = $jobs->forPage($page, 10);
 
 
         $user = User::find($request->user_id);
@@ -63,7 +56,7 @@ class JobAPIDBController extends Controller
                 return response()->json($jobs->values());
             }
 
-            $jobsArray = $jobsP->map(function ($job) use ($job_criteria) {
+            $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
                 // dd($job_criteria);
                 $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
                 return $job;
@@ -76,9 +69,23 @@ class JobAPIDBController extends Controller
             return response()->json($jobsArray);
         }
 
+        $responseCity = Http::get('https://vietnam-administrative-division-json-server-swart.vercel.app/province');
 
+        $data = $responseCity->json();
+
+        $provinceNames = array_map(function ($province) {
+            $name = strtolower($province['name']);
+            return $name;
+        }, $data);
+        $city = strtolower($city);
+         
+        if ($city && in_array($city, $provinceNames)) {
+            $jobs = $jobs->filter(function ($job) use ($city) {
+             
+                return stripos($job['sort_addresses'], $city) !== false;
+            });
+        }
         return response()->json($jobs->values());
-        // return [];
     }
 
 
@@ -108,6 +115,7 @@ class JobAPIDBController extends Controller
             $salaries = explode(',', $criteria['job_salary']);
             dd($criteria['job_salary']);
             if (count($salaries) > 1) {
+
 
                 $salaryMin = (int)$salaries[0];
                 $salaryMax = (int)$salaries[1];
