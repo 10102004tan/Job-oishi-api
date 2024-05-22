@@ -28,7 +28,7 @@ class JobAPIDBController extends Controller
         $city = $request->query('city');
         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
             ->leftJoin('addresses', 'jobs.company_id', '=', 'addresses.company_id')
-            ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.address as sort_addresses')
+            ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.province as sort_addresses')
             ->paginate(10);
 
 
@@ -41,7 +41,7 @@ class JobAPIDBController extends Controller
         });
 
         $cities = ['Hà Nội', 'Hồ Chí Minh', 'Đà Nẵng', 'Nha Trang', 'Quy Nhơn', 'Đồng Nai', 'Hải Phòng', 'Cần Thơ'];
-        
+
         // Áp dụng bộ lọc loại công việc (city)
         if ($city && in_array($city, $cities)) {
             $jobs = $jobs->filter(function ($job) use ($city) {
@@ -52,8 +52,8 @@ class JobAPIDBController extends Controller
 
 
         $jobsP = $jobs->forPage($page, 10);
-        
-        
+
+
         $user = User::find($request->user_id);
 
 
@@ -62,7 +62,7 @@ class JobAPIDBController extends Controller
             if ($job_criteria['job_salary'] == null) {
                 return response()->json($jobs->values());
             }
-            
+
             $jobsArray = $jobsP->map(function ($job) use ($job_criteria) {
                 // dd($job_criteria);
                 $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
@@ -75,7 +75,7 @@ class JobAPIDBController extends Controller
 
             return response()->json($jobsArray);
         }
-        
+
 
         return response()->json($jobs->values());
         // return [];
@@ -108,7 +108,7 @@ class JobAPIDBController extends Controller
             $salaries = explode(',', $criteria['job_salary']);
             dd($criteria['job_salary']);
             if (count($salaries) > 1) {
-                
+
                 $salaryMin = (int)$salaries[0];
                 $salaryMax = (int)$salaries[1];
                 $currentSalary = (int) $job['salary']['value'];
