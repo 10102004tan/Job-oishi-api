@@ -88,6 +88,24 @@ class JobsTableSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'id' => 3250,
+                'title' => 'Senior UI/UX Designer',
+                'content' => 'Senior UI/UX Designer at Zalo',
+                'requirements' => 'Strong UI/UX design portfolio',
+                'responsibilities' => 'Design user interfaces and experiences',
+                'company_id' => 848,
+                'experience' => '6+ years',
+                'job_type_str' => 'Full-time',
+                'job_level' => "Middle, Senior",
+                'recruitment_process' => 'Portfolio review and interview',
+                'is_salary_visible' => true,
+                'salary_value' => 'Negotiable',
+                'is_edit' => true,
+                'is_applied' => false,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
         
     }
