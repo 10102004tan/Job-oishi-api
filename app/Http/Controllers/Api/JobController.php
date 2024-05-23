@@ -85,12 +85,12 @@ class JobController extends Controller
         $data = $responseCity->json();
         
         $provinceNames = array_map(function($province) {
-            $name = strtolower($province['name']);
+            $name = mb_strtolower($province['name']);
             return $name;
         }, $data);
 
         // Áp dụng bộ lọc loại công việc (city)
-        $city = strtolower($city);
+        $city = mb_strtolower($city);
         if ($city && in_array($city, $provinceNames)) {
             $filteredData = $filteredData->filter(function ($job) use ($city) {
             

@@ -74,11 +74,13 @@ class JobAPIDBController extends Controller
         $data = $responseCity->json();
 
         $provinceNames = array_map(function ($province) {
-            $name = strtolower($province['name']);
+            $name = mb_strtolower($province['name'], 'UTF-8');
             return $name;
         }, $data);
-        $city = strtolower($city);
-         
+
+        $city = mb_strtolower($city, 'UTF-8');
+        
+        // dd($provinceNames);
         if ($city && in_array($city, $provinceNames)) {
             $jobs = $jobs->filter(function ($job) use ($city) {
              
