@@ -136,7 +136,7 @@ class JobAPIDBController extends Controller
 
     public function getDetail(string $id)
     {
-        $job = Job::with(['company', 'benefits', 'nationalities', 'skills'])->find($id);
+        $job = Job::with(['company', 'benefits', 'skills'])->find($id);
 
         if ($job !== null) {
             if ($job->is_edit !== 0) {
