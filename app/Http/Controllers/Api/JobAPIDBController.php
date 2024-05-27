@@ -17,78 +17,68 @@ class JobAPIDBController extends Controller
      * Display a listing of th e resource.
      */
 
-    public function index(Request $request)
-    {
-        $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at', 'benefit_id'];
-
-        // User criteria
-        // $user_id = 1;
-        // $user = User::find($user_id);
-        $page = $request->query('page', 1);
-        $city = $request->query('city');
-        $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
-            ->leftJoin('addresses', function ($join) {
-                $join->on('jobs.company_id', '=', 'addresses.company_id')
-                    ->whereRaw('addresses.id = (select id from addresses where addresses.company_id = jobs.company_id limit 1)');
-            })
-            ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.province as sort_addresses')
-            ->paginate(10);
-
-
-        $jobs->getCollection()->transform(function ($job) use ($makeHidden) {
-            $job->makeHidden($makeHidden);
-            $job->is_applied = (bool) $job->is_applied;
-            $job->is_salary_visible = (bool) $job->is_salary_visible;
-            $job->published = $this->formatTimeDifference($job->published);
-            return $job;
-        });
-
-
-        $jobs = $jobs->forPage($page, 10);
-
-
-        $user = User::find($request->user_id);
-
-
-        if ($user) {
-            $job_criteria = $user->jobCriteria;
-            if ($job_criteria['job_salary'] == null) {
-                return response()->json($jobs->values());
-            }
-
-            $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
-                // dd($job_criteria);
-                $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
-                return $job;
-            })->sortByDesc('similarity')->values()->toArray();
-
-            usort($jobsArray, function ($a, $b) {
-                return $b['similarity'] - $a['similarity'];
-            });
-
-            return response()->json($jobsArray);
-        }
-
-        $responseCity = Http::get('https://vietnam-administrative-division-json-server-swart.vercel.app/province');
-
-        $data = $responseCity->json();
-
-        $provinceNames = array_map(function ($province) {
-            $name = mb_strtolower($province['name'], 'UTF-8');
-            return $name;
-        }, $data);
-
-        $city = mb_strtolower($city, 'UTF-8');
-        
-        // dd($provinceNames);
-        if ($city && in_array($city, $provinceNames)) {
-            $jobs = $jobs->filter(function ($job) use ($city) {
-             
-                return stripos($job['sort_addresses'], $city) !== false;
-            });
-        }
-        return response()->json($jobs->values());
-    }
+     public function index(Request $request)
+     {
+         $makeHidden = ['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at', 'benefit_id'];
+     
+         // User criteria
+         $user_id = $request->query('user_id');
+         $user = null;
+         if ($user_id) {
+             $user = User::find($user_id);
+         }
+     
+         $page = $request->query('page', 1);
+         $city = $request->query('city');
+         $jobs = Job::leftJoin('companies', 'jobs.company_id', '=', 'companies.id')
+             ->leftJoin('addresses', function ($join) {
+                 $join->on('jobs.company_id', '=', 'addresses.company_id')
+                     ->whereRaw('addresses.id = (select id from addresses where addresses.company_id = jobs.company_id limit 1)');
+             })
+             ->select('jobs.*', 'companies.display_name as company_name', 'companies.image_logo as company_logo', 'addresses.province as sort_addresses')
+             ->paginate(15);
+     
+         $jobs->getCollection()->transform(function ($job) use ($makeHidden) {
+             $job->makeHidden($makeHidden);
+             $job->is_applied = (bool) $job->is_applied;
+             $job->is_salary_visible = (bool) $job->is_salary_visible;
+             $job->published = $this->formatTimeDifference($job->published);
+             return $job;
+         });
+     
+         $jobs = $jobs->forPage($page, 15);
+     
+         // Lọc theo thành phố nếu có
+         if ($city) {
+             $city = mb_strtolower($city, 'UTF-8');
+             $jobs = $jobs->filter(function ($job) use ($city) {
+                 return stripos($job['sort_addresses'], $city) !== false;
+             });
+         }
+     
+         // Nếu không có người dùng, trả về danh sách công việc đã lọc theo thành phố
+         if (!$user) {
+             return response()->json($jobs->values());
+         }
+     
+         // Nếu có người dùng, tiếp tục xử lý lọc theo tiêu chí công việc của người dùng
+         $job_criteria = $user->jobCriteria;
+         if ($job_criteria['job_salary'] == null) {
+             return response()->json($jobs->values());
+         }
+     
+         $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
+             $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
+             return $job;
+         })->sortByDesc('similarity')->values()->toArray();
+     
+         usort($jobsArray, function ($a, $b) {
+             return $b['similarity'] - $a['similarity'];
+         });
+     
+         return response()->json($jobsArray);
+     }
+     
 
 
     private function calculateSimilarity($job, $criteria)
