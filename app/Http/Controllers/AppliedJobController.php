@@ -18,21 +18,30 @@ class AppliedJobController extends Controller
         $userId = $request->id;
         //Query the applied jobs with the required fields
         $appliedJobs = DB::table('applied_job')
-            ->join('jobs', 'applied_job.job_id', '=', 'jobs.id')
-            ->join('companies', 'jobs.company_id', '=', 'companies.id')
-            ->join('addresses', 'companies.id', '=', 'addresses.company_id')
-            ->where('applied_job.user_id', $userId)
-            ->select(
-                'applied_job.job_id as id',
-                'applied_job.user_id',
-                'jobs.title',
-                'companies.display_name as company_name',
-                'companies.image_logo as company_logo',
-                'addresses.province as sort_addresses',
-                'jobs.is_salary_visible',
-                'jobs.created_at'
-            )
-            ->get();
+        ->join('jobs', 'applied_job.job_id', '=', 'jobs.id')
+        ->join('companies', 'jobs.company_id', '=', 'companies.id')
+        ->join('addresses', 'companies.id', '=', 'addresses.company_id')
+        ->where('applied_job.user_id', $userId)
+        ->select(
+            'applied_job.job_id as id',
+            'applied_job.user_id',
+            'jobs.title',
+            'companies.display_name as company_name',
+            'companies.image_logo as company_logo',
+            DB::raw('GROUP_CONCAT(addresses.province ORDER BY addresses.province ASC SEPARATOR ", ") as sort_addresses'),
+            'jobs.is_salary_visible',
+            'jobs.created_at'
+        )
+        ->groupBy(
+            'applied_job.job_id',
+            'applied_job.user_id',
+            'jobs.title',
+            'companies.display_name',
+            'companies.image_logo',
+            'jobs.is_salary_visible',
+            'jobs.created_at'
+        )
+        ->get();
 
 
 
