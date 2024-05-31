@@ -9,11 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Nationality extends Model
 {
     use HasFactory;
-    public function jobs() : BelongsToMany {
-        return $this->belongsToMany(Job::class);
-    }
 
     public function companies() : BelongsToMany {
-        return $this->BelongsToMany(Company::class, );
+        return $this->BelongsToMany(Company::class, 'company_nationality');
     }
 }

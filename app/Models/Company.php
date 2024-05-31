@@ -32,7 +32,7 @@ class Company extends Model
     }
 
     public function nationalities() : BelongsToMany {
-        return $this->BelongsToMany(Nationality::class);
+        return $this->BelongsToMany(Nationality::class, "company_nationality");
     }
 
     public function industries() : BelongsToMany {
