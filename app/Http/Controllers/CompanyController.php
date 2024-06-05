@@ -30,6 +30,7 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
 {
     // Validate the incoming request data
