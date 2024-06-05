@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->integer('role')->default(0);
             $table->timestamp('email_verified_at')->useCurrent();
+            $table->string('verify_token_code')->nullable();
             $table->text('password');
             $table->string('birth')->nullable();
             $table->string('gender')->nullable();

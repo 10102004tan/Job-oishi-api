@@ -64,3 +64,14 @@ Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCrit
 
 //api cho users_device với phương thức post
 Route::post('fcm', [UserApiController::class, "saveFcmToken"])->name('user.fcm');
+
+
+// Forgot password routes
+Route::post("/forgot-password", [UserApiController::class, "forgotPassword"])->name("forgot_password");
+// Route for verify token
+Route::post("/verify-token", [UserApiController::class, "checkVerifyToken"])->name("verify_token");
+// Route for reset password
+Route::post("/reset-password", [UserApiController::class, "resetPassword"])->name("reset_password");
+
+// Route test
+Route::get("/test", [UserApiController::class, "sendMail"])->name("test");
