@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Job;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -23,7 +24,8 @@ class JobController extends Controller
     public function create()
     {
         $companies = Company::all();
-        return view('job.create', ['companies' => $companies]);
+        $skills = Skill::all();
+        return view('job.create', ['companies' => $companies, 'skills' => $skills]);
     }
 
     /**
@@ -31,25 +33,36 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $validated = $request->validate([
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'company_id' => 'required',
-            'job_level' => 'required'
+        // Validate form data
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'company_id' => 'required|integer',
+            'experience' => 'required|string|max:255',
+            'job_type_str' => 'required|string|max:255',
+            'job_level' => 'required|string|max:255',
         ]);
 
-        $job = new Job();
-        $job->fill($validated);
-        $job->experience = $request['experience'];
-        $job->job_type_str = $request['job_type_str'];
-        $job->is_edit = $request['is_edit'];
-        $job->is_salary_visible = $request['is_salary_visible'];
-        $job->is_applied = $request['is_applied'];
-        $job->save();
+        // Create new job
+        $job = Job::create([
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'company_id' => $validatedData['company_id'],
+            'experience' => $validatedData['experience'],
+            'job_type_str' => $validatedData['job_type_str'],
+            'job_level' => $validatedData['job_level'],
+            'is_edit' => $request->has('is_edit'),
+            'is_salary_visible' => $request->has('is_salary_visible'),
+            'is_applied' => $request->has('is_applied'),
+        ]);
+
+        // Attach skills to the job
+        if ($request->has('skills')) {
+            $job->skills()->attach($request->input('skills'));
+        }
 
         return redirect()->route('jobs.index')
-            ->with('success', 'Thêm nghề nghiệp mới thành công!');
+        ->with('success', 'Thêm nghề nghiệp mới thành công!');
     }
 
     /**
