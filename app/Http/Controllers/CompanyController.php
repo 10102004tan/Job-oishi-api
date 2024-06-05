@@ -32,50 +32,49 @@ class CompanyController extends Controller
      */
 
     public function store(Request $request)
-    {
-        // Validate the incoming request data
-        $validatedData = $request->validate([
-            'display_name' => 'nullable|string|max:255',
-            'image_logo' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'website' => 'nullable|string|max:255',
-            'tagline' => 'nullable|string',
-            'company_size' => 'nullable|string|max:255',
-            'num_job_openings' => 'nullable|integer',
-            'industries_arr' => 'nullable|string|max:255',
-            'addresses.*.street' => 'nullable|string|max:255', // Validate each address street
-            'addresses.*.ward' => 'nullable|string',
-            'addresses.*.district' => 'nullable|string|max:255',
-            'addresses.*.province' => 'nullable|string|max:255',
+{
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'display_name' => 'nullable|string|max:255',
+        'image_logo' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'website' => 'nullable|string|max:255',
+        'tagline' => 'nullable|string',
+        'company_size' => 'nullable|string|max:255',
+        'num_job_openings' => 'nullable|integer',
+        'industries_arr' => 'nullable|string|max:255',
+        'addresses.*.street' => 'nullable|string|max:255', // Validate each address street
+        'addresses.*.ward' => 'nullable|string',
+        'addresses.*.district' => 'nullable|string|max:255',
+        'addresses.*.province' => 'nullable|string|max:255',
+    ]);
+
+    // Create a new company record
+    $company = Company::create([
+        'display_name' => $validatedData['display_name'] ?? null,
+        'image_logo' => $validatedData['image_logo'] ?? null,
+        'description' => $validatedData['description'] ?? null,
+        'website' => $validatedData['website'] ?? null,
+        'tagline' => $validatedData['tagline'] ?? null,
+        'company_size' => $validatedData['company_size'] ?? null,
+        'num_job_openings' => $validatedData['num_job_openings'] ?? null,
+        'industries_arr' => $validatedData['industries_arr'] ?? null,
+    ]);
+
+    // Create a new address record associated with the company
+    foreach ($validatedData['addresses'] as $addressData) {
+        Address::create([
+            'company_id' => $company->id,
+            'street' => $addressData['street'] ?? null,
+            'ward' => $addressData['ward'] ?? null,
+            'district' => $addressData['district'] ?? null,
+            'province' => $addressData['province'] ?? null,
         ]);
-
-        // Create a new company record
-        $company = Company::create([
-            'display_name' => $validatedData['display_name'] ?? null,
-            'image_logo' => $validatedData['image_logo'] ?? null,
-            'description' => $validatedData['description'] ?? null,
-            'website' => $validatedData['website'] ?? null,
-            'tagline' => $validatedData['tagline'] ?? null,
-            'company_size' => $validatedData['company_size'] ?? null,
-            'num_job_openings' => $validatedData['num_job_openings'] ?? null,
-            'industries_arr' => $validatedData['industries_arr'] ?? null,
-        ]);
-
-        // Create a new address record associated with the company
-        foreach ($validatedData['addresses'] as $addressData) {
-            Address::create([
-                'company_id' => $company->id,
-                'street' => $addressData['street'] ?? null,
-                'ward' => $addressData['ward'] ?? null,
-                'district' => $addressData['district'] ?? null,
-                'province' => $addressData['province'] ?? null,
-            ]);
-        }
-
-        // Return a response, typically a redirect or a JSON response
-        return response()->json(['company' => $company], 201);
-    
     }
+
+    // Return a response, typically a redirect or a JSON response
+    return response()->json(['company' => $company], 201);
+}
 
 
     /**
