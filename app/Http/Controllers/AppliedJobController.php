@@ -77,8 +77,8 @@ class AppliedJobController extends Controller
     public function store(Request $request)
     {
         $appliedJob = new JobApplied();
-        $$appliedJob->job_id = $request['job_id'];
-        $$appliedJob->user_id = $request['user_id'];
+        $appliedJob->job_id = $request['job_id'];
+        $appliedJob->user_id = $request['user_id'];
 
         // Lưu trữ dữ liệu
         if ($appliedJob->save()) {

@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users_fcm');
+        Schema::dropIfExists('users_device');
     }
 };

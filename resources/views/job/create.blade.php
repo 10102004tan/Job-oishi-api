@@ -29,6 +29,15 @@
         </div>
 
         <div class="mb-3">
+            <label for="skills" class="form-label">Required Skills</label>
+            <select class="form-select" multiple id="skills" name="skills[]">
+                @foreach($skills as $skill)
+                    <option value="{{ $skill->id }}">{{ $skill->skill_name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="experience" class="form-label">Job Experience</label>
             <input type="text" class="form-control" id="experience" name="experience">
             @error('experience')

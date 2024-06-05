@@ -11,6 +11,7 @@ class Address extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['company_id', 'street', 'ward', 'district', 'province'];
     public function company() : BelongsTo {
         return $this->belongsTo(Company::class);
     }

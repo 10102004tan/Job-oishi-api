@@ -9,7 +9,7 @@ class JobApplied extends Model
 {
     use HasFactory;
     // Chỉ định tên bảng tùy chỉnh
-    protected $table = 'job_applied';
+    protected $table = 'applied_job';
     protected $fillable = [
         'job_id',
         'user_id',
