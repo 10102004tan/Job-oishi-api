@@ -110,7 +110,6 @@ class JobSearchController extends Controller
                 'published' => $job['published']['since'],
                 'experiences_str' => $job['experiences_str'],
                 'contract_types_str' => $job['contract_types_str'],
-                // 'benefits' => $job['benefits']
             ];
         });
 
