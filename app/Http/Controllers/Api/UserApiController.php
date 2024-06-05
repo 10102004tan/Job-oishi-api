@@ -189,13 +189,7 @@ class UserApiController extends Controller
             $user->save();
 
             // Send token to user email with php mailer
-            try {
-                Mail::to($user->email)->send(new VerifyEmail($token));
-            } catch (\Exception $e) {
-                Log('Email could not be sent: ' . $e->getMessage());
-            }
-
-            return array("status" => 200, "message" => "Token sent to your email");
+            return $this->sendMail($user->email, $token);
         }
     }
 
@@ -215,11 +209,25 @@ class UserApiController extends Controller
     {
         $user = User::where('id', $request->id)->first();
         if ($user) {
-            $user->password = Hash::make($request->password);   
+            $user->password = Hash::make($request->password);
             $user->save();
             return array("status" => 200, "message" => "Password reset successfully");
         } else {
             return array("status" => 404, "message" => "id is incorrect");
         }
+    }
+
+    // Send mail
+    public function sendMail($mail, $token)
+    {
+        $response = NULL;
+        try {
+            Mail::to($mail)->send(new VerifyEmail($token));
+            $response =  array("status" => 200, "message" => "Token sent to your email");
+        } catch (\Exception $e) {
+            $response = array("status" => 400, "message" => "Error");
+        }
+
+        return $response;
     }
 }

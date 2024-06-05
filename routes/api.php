@@ -72,3 +72,6 @@ Route::post("/forgot-password", [UserApiController::class, "forgotPassword"])->n
 Route::post("/verify-token", [UserApiController::class, "checkVerifyToken"])->name("verify_token");
 // Route for reset password
 Route::post("/reset-password", [UserApiController::class, "resetPassword"])->name("reset_password");
+
+// Route test
+Route::get("/test", [UserApiController::class, "sendMail"])->name("test");
