@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\AppliedJobController;
 use App\Http\Controllers\JobAppliedController;
+use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,9 @@ Route::resource('benefits', BenefitAPIDBController::class);
 
 Route::post("/jobs", [JobController::class, 'index']);
 Route::post("/jobs2", [JobAPIDBController::class, 'index']);
+
+// Keywoard
+Route::get("/jobs/key", [KeywordController::class, 'index']);
 
 // JOb search
 Route::get("/jobs/search/", [JobSearchController::class, 'search']);

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Job;
-use App\Models\JobCriteria;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
