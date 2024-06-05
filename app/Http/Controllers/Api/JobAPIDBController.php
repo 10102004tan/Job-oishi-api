@@ -107,8 +107,6 @@ class JobAPIDBController extends Controller
             $salaries = explode(',', $criteria['job_salary']);
             dd($criteria['job_salary']);
             if (count($salaries) > 1) {
-
-
                 $salaryMin = (int)$salaries[0];
                 $salaryMax = (int)$salaries[1];
                 $currentSalary = (int) $job['salary']['value'];
@@ -120,14 +118,9 @@ class JobAPIDBController extends Controller
         return $score;
     }
 
-
-
-
-
     public function getDetail(string $id)
     {
         $job = Job::with(['company', 'benefits', 'skills'])->find($id);
-
         if ($job !== null) {
             if ($job->is_edit !== 0) {
                 // Hide the company_id attribute
