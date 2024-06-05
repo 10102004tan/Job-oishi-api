@@ -28,7 +28,7 @@ class User extends Authenticatable
         'time_starting_work',
         'country',
         'city',
-        'phone'
+        'phone',
     ];
 
     /**
@@ -37,7 +37,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        'password', 
         'remember_token',
     ];
 

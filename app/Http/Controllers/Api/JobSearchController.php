@@ -48,11 +48,10 @@ class JobSearchController extends Controller
         // Gửi yêu cầu đến API TopDev với các tham số
         $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=1000&locale=vi_VN&fields[job]=id,company,title,salary,addresses,published,contract_types_str,benefits,experiences_str");
 
-        // Xử lý phản hồi từ API TopDev
+       
         $data = json_decode($response->getBody()->getContents(), true);
         $collection = collect($data['data']);
 
-        // Lọc danh sách công việc dựa trên tên công việc
         if ($keyword) {
             $filteredData = $collection->filter(function ($job) use ($keyword) {
                 return stripos($job['title'], $keyword) !== false || stripos($job['company']['display_name'], $keyword) !== false;
@@ -111,7 +110,6 @@ class JobSearchController extends Controller
                 'published' => $job['published']['since'],
                 'experiences_str' => $job['experiences_str'],
                 'contract_types_str' => $job['contract_types_str'],
-                // 'benefits' => $job['benefits']
             ];
         });
 

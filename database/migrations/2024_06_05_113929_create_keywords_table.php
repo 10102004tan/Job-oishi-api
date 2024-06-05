@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('skills', function (Blueprint $table) {
-            $table->id()->autoIncrement();
-            $table->string('skill_name')->nullable();
+        Schema::create('keywords', function (Blueprint $table) {
+            $table->id();
+            $table->string("name");
+            $table->string("keyword");
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('skills');
+        Schema::dropIfExists('keywords');
     }
 };

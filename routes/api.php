@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\UploadFileController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\AppliedJobController;
 use App\Http\Controllers\JobAppliedController;
+use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,9 @@ Route::get("/bookmarks/ids", [JobController::class, 'getBookmarksArrJobIds']);
 Route::post("/bookmarks/destroy", [JobController::class, 'destroyBookmark']);
 Route::get("/bookmarks/total", [JobController::class, 'getTotalJobBookmark']);
 
+
+// Keywoard
+Route::get("/jobs/key", [KeywordController::class, 'index']);
 
 // JOb search
 Route::get("/jobs/search/", [JobSearchController::class, 'search']);
@@ -71,3 +75,14 @@ Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCrit
 
 //api cho users_device với phương thức post
 Route::post('fcm', [UserApiController::class, "saveFcmToken"])->name('user.fcm');
+
+
+// Forgot password routes
+Route::post("/forgot-password", [UserApiController::class, "forgotPassword"])->name("forgot_password");
+// Route for verify token
+Route::post("/verify-token", [UserApiController::class, "checkVerifyToken"])->name("verify_token");
+// Route for reset password
+Route::post("/reset-password", [UserApiController::class, "resetPassword"])->name("reset_password");
+
+// Route test
+Route::get("/test", [UserApiController::class, "sendMail"])->name("test");

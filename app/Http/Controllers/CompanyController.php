@@ -30,48 +30,50 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
 {
-    // dd($request->all());
-    // Validate the request data
-    $validated = $request->validate([
-        'display_name' => 'required|max:255',
-        'description' => 'required',
-        'image_logo' => 'required|url',
-        'website' => 'required|url',
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'display_name' => 'nullable|string|max:255',
+        'image_logo' => 'nullable|string|max:255',
+        'description' => 'nullable|string',
+        'website' => 'nullable|string|max:255',
         'tagline' => 'nullable|string',
-        'company_size' => 'nullable|string',
+        'company_size' => 'nullable|string|max:255',
         'num_job_openings' => 'nullable|integer',
-        'nationality_id' => 'nullable|integer',
-        'benefits' => 'nullable|array',
-        'addresses.*.line_1' => 'required|string',
-        'addresses.*.line_2' => 'nullable|string',
-        // Add validation rules for other address fields if needed
+        'industries_arr' => 'nullable|string|max:255',
+        'addresses.*.street' => 'nullable|string|max:255', // Validate each address street
+        'addresses.*.ward' => 'nullable|string',
+        'addresses.*.district' => 'nullable|string|max:255',
+        'addresses.*.province' => 'nullable|string|max:255',
     ]);
 
-    // Create a new Company instance and fill its attributes
-    $company = new Company();
-    $company->fill($validated);
-    $company->save();
+    // Create a new company record
+    $company = Company::create([
+        'display_name' => $validatedData['display_name'] ?? null,
+        'image_logo' => $validatedData['image_logo'] ?? null,
+        'description' => $validatedData['description'] ?? null,
+        'website' => $validatedData['website'] ?? null,
+        'tagline' => $validatedData['tagline'] ?? null,
+        'company_size' => $validatedData['company_size'] ?? null,
+        'num_job_openings' => $validatedData['num_job_openings'] ?? null,
+        'industries_arr' => $validatedData['industries_arr'] ?? null,
+    ]);
 
-    // Attach benefits to the company
-    if (isset($validated['benefits'])) {
-        $company->benefits()->attach($validated['benefits']);
+    // Create a new address record associated with the company
+    foreach ($validatedData['addresses'] as $addressData) {
+        Address::create([
+            'company_id' => $company->id,
+            'street' => $addressData['street'] ?? null,
+            'ward' => $addressData['ward'] ?? null,
+            'district' => $addressData['district'] ?? null,
+            'province' => $addressData['province'] ?? null,
+        ]);
     }
 
-    // Add Addresses
-    if ($request->has('addresses')) {
-        foreach ($validated['addresses'] as $addressData) {
-            dd($addressData);
-            $address = new Address();
-            $address->fill($addressData);
-            $address->company_id = $company->id;
-            $address->save();
-        }
-    }
-
-    return redirect()->route('companies.index')
-        ->with('success', 'Thêm công ty, doanh nghiệp mới thành công!');
+    // Return a response, typically a redirect or a JSON response
+    return response()->json(['company' => $company], 201);
 }
 
 
