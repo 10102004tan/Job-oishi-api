@@ -59,4 +59,8 @@ class User extends Authenticatable
         return $this->hasOne(JobCriteria::class);
 
     }
+
+    public function notifications(){
+        return $this->belongsToMany(Notification::class,'user_notification','user_id','notification_id');
+    }
 }

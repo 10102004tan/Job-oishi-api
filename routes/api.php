@@ -32,7 +32,6 @@ Route::resource('benefits', BenefitAPIDBController::class);
 
 Route::get("/jobs", [JobController::class, 'index']);
 Route::get("/jobs/detail", [JobController::class, 'getDetailJob']);
-Route::post("/jobs2", [JobAPIDBController::class, 'index']);
 Route::get("/jobs/keyword", [JobController::class, 'keyword']);
 Route::get("/bookmarks", [JobController::class, 'getJobsByArrIds']);
 Route::post("/bookmarks/store", [JobController::class, 'storeBookmark']);
@@ -87,3 +86,9 @@ Route::post("/reset-password", [UserApiController::class, "resetPassword"])->nam
 
 // Route test
 Route::get("/test", [UserApiController::class, "sendMail"])->name("test");
+
+
+// route notification
+Route::get('/test2', [NotificationController::class, 'getAllNotification']);
+Route::get('/getallnotifications', [NotificationController::class, 'getAllNotficationByUserId']);
+Route::get('/notificationreaded', [NotificationController::class, 'updateReadStatus']);
