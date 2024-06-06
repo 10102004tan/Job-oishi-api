@@ -31,6 +31,7 @@ Route::resource('benefits', BenefitAPIDBController::class);
 
 
 Route::get("/jobs", [JobController::class, 'index']);
+Route::get("/jobs/detail", [JobController::class, 'getDetailJob']);
 Route::post("/jobs2", [JobAPIDBController::class, 'index']);
 Route::get("/jobs/keyword", [JobController::class, 'keyword']);
 Route::get("/bookmarks", [JobController::class, 'getJobsByArrIds']);
@@ -38,7 +39,7 @@ Route::post("/bookmarks/store", [JobController::class, 'storeBookmark']);
 Route::get("/bookmarks/ids", [JobController::class, 'getBookmarksArrJobIds']);
 Route::post("/bookmarks/destroy", [JobController::class, 'destroyBookmark']);
 Route::get("/bookmarks/total", [JobController::class, 'getTotalJobBookmark']);
-
+Route::get("/applied/total", [JobController::class, 'getTotalJobApplied']);
 
 // Keywoard
 Route::get("/jobs/key", [KeywordController::class, 'index']);
@@ -75,7 +76,7 @@ Route::post("/user/{id}/job_criteria", [UserApiController::class, "updateJobCrit
 
 //api cho users_device với phương thức post
 Route::post('fcm', [UserApiController::class, "saveFcmToken"])->name('user.fcm');
-
+Route::get('fcm/all', [UserApiController::class, "getAllInfo"]);
 
 // Forgot password routes
 Route::post("/forgot-password", [UserApiController::class, "forgotPassword"])->name("forgot_password");

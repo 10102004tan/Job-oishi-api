@@ -230,4 +230,9 @@ class UserApiController extends Controller
 
         return $response;
     }
+
+    public function getAllInfo(){
+        $userDevie = UserFcm::all();
+        return response()->json($userDevie);
+    }
 }

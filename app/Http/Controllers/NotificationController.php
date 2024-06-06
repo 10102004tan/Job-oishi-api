@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FcmNotification;
 use App\Models\User;
 use App\Models\UserFcm;
+use App\Notifications\FirebasePushNotification;
 use App\Notifications\MyFcmNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -25,7 +26,8 @@ class NotificationController extends Controller
      */
     public function create()
     {
-        return view('notification.create');
+        $users = User::all();
+        return view('notification.create', compact('users'));
     }
 
     /**
@@ -36,12 +38,27 @@ class NotificationController extends Controller
 
         $title = $request->input('title');
         $body = $request->input('body');
-        $fcmTokens= UserFcm::where('is_active',1)->pluck('fcm_token')->toArray();
-        $notifiables = array_map(function($fcmToken) {
-            return new FcmNotification($fcmToken);
-        }, $fcmTokens);
-    
-        Notification::send($notifiables, new MyFcmNotification($title, $body));
+        $fcmTokens = [];
+
+        if ($request->type == '1'){
+
+        }
+        else if ($request->type == '2'){
+            $fcmTokens = UserFcm::where('is_active', 1)->pluck('fcm_token')->toArray();
+        }
+        else if ($request->type == '3'){
+            $userIds = $request->input('users');
+            $fcmTokens = UserFcm::whereIn('id', $userIds)
+            ->where('is_active', 1)
+            ->pluck('fcm_token')
+            ->toArray();
+        }
+
+        foreach ($fcmTokens as $token) {
+            Notification::route('fcm', $token)
+                ->notify(new FirebasePushNotification($title, $body));
+        }
+
         // Gửi thông báo
         return redirect()->route('notifications.index');
     }
