@@ -267,7 +267,7 @@ class JobController extends Controller
         // So sánh vị trí công việc
         $positionsArray = explode(",", $criteria['job_position']);
         foreach ($positionsArray as $value) {
-            if (strpos($job['title'],  $value) !== false) {
+            if (strpos(strtolower($job['title']),  strtolower($value)) !== false) {
                 $score += 2;
             }
         }
@@ -276,7 +276,7 @@ class JobController extends Controller
             // So sánh địa điểm công việc
             $positionsArray = explode(",", $criteria['job_location']);
             foreach ($positionsArray as $value) {
-                if (strpos($job['addresses']['address_region_list'], $value) !== false) {
+                if (strpos(strtolower($job['addresses']['address_region_list']), strtolower($value)) !== false) {
                     $score += 3;
                 }
             }
@@ -284,7 +284,7 @@ class JobController extends Controller
             // So sánh địa điểm công việc
             $positionsArray = explode(",", $criteria['job_location']);
             foreach ($positionsArray as $value) {
-                if (strpos($job['sort_addresses'], $value) !== false) {
+                if (strpos(strtolower($job['sort_addresses']), strtolower($value)) !== false) {
                     $score += 3;
                 }
             }
@@ -381,7 +381,7 @@ class JobController extends Controller
                 $data["is_applied"] = $dataAPI->is_applied;
                 $data["modified"] = $dataAPI->modified;
                 $data["is_bookmark"] = false;
-                
+
                 // check bookmark
                 if ($user_id != -1){
                     $bookmark = Bookmark::where('user_id', $request->user_id)->where('job_id', $job_id)->first();
@@ -389,7 +389,7 @@ class JobController extends Controller
                         $data["is_bookmark"] = true;
                     }
                 }
-                
+
                 // dd($dataAPI->skills_arr);
 
                 return $data;
@@ -454,7 +454,7 @@ class JobController extends Controller
                         'is_bookmark' => $job->is_bookmark,
                         'modified' => [],
                     ];
-    
+
                     return response()->json($response);
                 }
             } else {
