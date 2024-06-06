@@ -29,7 +29,8 @@ class User extends Authenticatable
         'country',
         'city',
         'phone',
-        'is_first_login'
+        'is_first_login',
+        'verify_token_code',
     ];
 
     /**
