@@ -30,8 +30,8 @@ class JobController extends Controller
             $lastPage = $data['meta']['last_page'];
             $jobs = collect($data['data']);
 
-            // Xử lý lọc công việc theo tiêu chí của người dùng
             $user = User::find($request->user_id);
+            // Xử lý lọc công việc theo tiêu chí của người dùng
             if ($user) {
                 $job_criteria = $user->jobCriteria;
                 if ($job_criteria['job_salary'] != null) {
@@ -43,6 +43,7 @@ class JobController extends Controller
                     usort($jobsArray, function ($a, $b) {
                         return $b['similarity'] - $a['similarity'];
                     });
+
 
                     $filteredData = collect($jobsArray)->map(function ($job) {
                         return [
@@ -59,13 +60,14 @@ class JobController extends Controller
                             'provicene' => $job['addresses']['address_region_list']
                         ];
                     });
-                    $mergedData = collect($jobs)->merge($filteredData)->toArray();
+                    // $mergedData = collect($jobs)->merge($filteredData)->toArray();
                     return [
-                        'data' => $mergedData,
+                        'data' => $filteredData,
                         'last_page' => $lastPage
                     ];
                 }
             }
+
 
 
             $filteredData = $jobs->map(function ($job) {
@@ -213,7 +215,7 @@ class JobController extends Controller
         $jobs = [];
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['type'] == 0) {
-                
+
                 $job = Cache::get("job_{$data[$i]['job_id']}");
                 if (!$job) {
                     $response = Http::get("https://api.topdev.vn/td/v2/jobs/{$data[$i]['job_id']}?fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
@@ -231,7 +233,7 @@ class JobController extends Controller
                         'published' => $result['data']['published']['since'],
                         'type' => 0
                     ];
-                    
+
 
                     Cache::put("job_{$data[$i]['job_id']}", $job, 60);
                 }
@@ -289,15 +291,15 @@ class JobController extends Controller
 
 
         // So sánh mức lương
-        $salaries = explode(',', $criteria['job_salary']);
-        $salaryMin = $salaries[0];
-        $salaryMax = $salaries[1];
-        foreach ($salaries as $salary) {
-            if ($job['salary']['value'] >= $salaryMin && $job['salary']['value'] <= $salaryMax) {
-                $score += 1;
-                break;
-            }
-        }
+        // $salaries = explode(',', $criteria['job_salary']);
+        // $salaryMin = $salaries[0];
+        // $salaryMax = $salaries[1];
+        // foreach ($salaries as $salary) {
+        //     if ($job['salary']['value'] >= $salaryMin && $job['salary']['value'] <= $salaryMax) {
+        //         $score += 1;
+        //         break;
+        //     }
+        // }
 
         return $score;
     }
