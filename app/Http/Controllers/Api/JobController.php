@@ -24,7 +24,7 @@ class JobController extends Controller
     {
         $type = $request->query('type', 0);
         $city = $request->query('city');
-        $page_size = 6;
+        $page_size = 10;
         $page = $request->query('page', 1);
 
         if ($type == 0) {
