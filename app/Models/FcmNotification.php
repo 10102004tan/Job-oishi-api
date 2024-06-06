@@ -22,4 +22,8 @@ class FcmNotification extends Model
     {
         return $this->fcmToken;
     }
+
+    public function __toString() {
+        return $this->fcmToken;
+    }
 }
