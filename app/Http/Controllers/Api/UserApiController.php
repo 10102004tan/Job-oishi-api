@@ -207,7 +207,7 @@ class UserApiController extends Controller
     // Reset password
     public function resetPassword(Request $request)
     {
-        $user = User::where('id', $request->id)->first();
+        $user = User::where('email', $request->email)->first();
         if ($user) {
             $user->password = Hash::make($request->password);
             $user->save();
