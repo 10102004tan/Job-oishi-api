@@ -122,7 +122,7 @@ class JobController extends Controller
                 $job->makeHidden($makeHidden);
                 $job->is_applied = (bool) $job->is_applied;
                 $job->is_salary_visible = (bool) $job->is_salary_visible;
-                $job->published = $this->formatTimeDifference($job->published);
+                $job->published = $this->formatTimeDifference($job->created_at);
                 return $job;
             });
 
