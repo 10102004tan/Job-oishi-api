@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('country')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();
+            $table->integer('is_first_login')->default(1);
             $table->string('login_method')->default("email_login");
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->nullable();
