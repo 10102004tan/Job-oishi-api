@@ -8,31 +8,6 @@ use Illuminate\Support\Facades\Http;
 
 class JobSearchController extends Controller
 {
-    public function index(Request $request)
-    {
-        $page_size = $request->query('page_size', 100);
-        $response = Http::get("https://api.topdev.vn/td/v2/jobs?page_size=$page_size&locale=vi_VN&fields[job]=id,company,title,skills_ids,salary,addresses,published,detail_url");
-
-        $data = json_decode($response->getBody()->getContents(), true);
-        $jobs = collect($data['data']);
-
-        $filteredData = $jobs->map(function ($job) {
-            return [
-                'id' => $job['id'],
-                'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                'company_id' => $job['company']['id'],
-                'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                'company_logo' => $job['company']['image_logo'],
-                'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
-                'salary_min' => $job['salary']['min'],
-                'salary_max' => $job['salary']['max'],
-                'published' => $job['published']['since'],
-            ];
-        });
-
-        
-        return response()->json($filteredData);
-    }
 
     public function search(Request $request)
     {
