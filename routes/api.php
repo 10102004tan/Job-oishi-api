@@ -30,8 +30,15 @@ Route::get('/job/{id}', [JobAPIDBController::class, 'getDetail']);
 Route::resource('benefits', BenefitAPIDBController::class);
 
 
-Route::post("/jobs", [JobController::class, 'index']);
+Route::get("/jobs", [JobController::class, 'index']);
 Route::post("/jobs2", [JobAPIDBController::class, 'index']);
+Route::get("/jobs/keyword", [JobController::class, 'keyword']);
+Route::get("/bookmarks", [JobController::class, 'getJobsByArrIds']);
+Route::post("/bookmarks/store", [JobController::class, 'storeBookmark']);
+Route::get("/bookmarks/ids", [JobController::class, 'getBookmarksArrJobIds']);
+Route::post("/bookmarks/destroy", [JobController::class, 'destroyBookmark']);
+Route::get("/bookmarks/total", [JobController::class, 'getTotalJobBookmark']);
+
 
 // Keywoard
 Route::get("/jobs/key", [KeywordController::class, 'index']);
