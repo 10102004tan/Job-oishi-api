@@ -88,7 +88,7 @@ class JobAPIDBController extends Controller
         $positionsArray = explode(",", $criteria['job_position']);
         foreach ($positionsArray as $value) {
             if (strpos(strtolower($job['title']),  strtolower($value)) !== false) {
-                $score += 6;
+                $score += 2;
             }
         }
 
@@ -100,20 +100,6 @@ class JobAPIDBController extends Controller
             }
         }
 
-
-        // So sánh mức lương
-        // if ($job["is_salary_visible"]) {
-        //     $salaries = explode(',', $criteria['job_salary']);
-        //     // dd($criteria['job_salary']);
-        //     if (count($salaries) > 1) {
-        //         $salaryMin = (int)$salaries[0];
-        //         $salaryMax = (int)$salaries[1];
-        //         $currentSalary = (int) $job['salary']['value'];
-        //         if ($currentSalary >= $salaryMin && $currentSalary <= $salaryMax) {
-        //             $score += 1;
-        //         }
-        //     }
-        // }
         return $score;
     }
 
