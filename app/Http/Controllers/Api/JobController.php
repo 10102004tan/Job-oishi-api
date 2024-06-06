@@ -14,12 +14,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+
+use function PHPSTORM_META\type;
+
 class JobController extends Controller
 {
 
     public function index(Request $request)
     {
-        $type = $request->query('type',0);
+        $type = $request->query('type', 0);
         $city = $request->query('city');
         $page_size = 6;
         $page = $request->query('page', 1);
@@ -34,41 +37,35 @@ class JobController extends Controller
             // Xử lý lọc công việc theo tiêu chí của người dùng
             if ($user) {
                 $job_criteria = $user->jobCriteria;
-                if ($job_criteria['job_salary'] != null) {
-                    $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
-                        $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
-                        return $job;
-                    })->sortByDesc('similarity')->values()->toArray();
+                $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
+                    $job['similarity'] = $this->calculateSimilarity($job, $job_criteria, 0);
+                    return $job;
+                })->sortByDesc('similarity')->values()->toArray();
 
-                    usort($jobsArray, function ($a, $b) {
-                        return $b['similarity'] - $a['similarity'];
-                    });
+                usort($jobsArray, function ($a, $b) {
+                    return $b['similarity'] - $a['similarity'];
+                });
 
-
-                    $filteredData = collect($jobsArray)->map(function ($job) {
-                        return [
-                            'id' => $job['id'],
-                            'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
-                            'company_id' => $job['company']['id'],
-                            'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
-                            'company_logo' => $job['company']['image_logo'],
-                            'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
-                            'salary_min' => $job['salary']['min'],
-                            'salary_max' => $job['salary']['max'],
-                            'is_salary_visible' => $job['is_salary_visible'],
-                            'published' => $job['published']['since'],
-                            'provicene' => $job['addresses']['address_region_list']
-                        ];
-                    });
-                    // $mergedData = collect($jobs)->merge($filteredData)->toArray();
+                $filteredData = collect($jobsArray)->map(function ($job) {
                     return [
-                        'data' => $filteredData,
-                        'last_page' => $lastPage
+                        'id' => $job['id'],
+                        'title' => strlen($job['title']) > 25 ? mb_substr($job['title'], 0, 25) . '...' : $job['title'],
+                        'company_id' => $job['company']['id'],
+                        'company_name' => strlen($job['company']['display_name']) > 30 ? mb_substr($job['company']['display_name'], 0, 30) . '...' : $job['company']['display_name'],
+                        'company_logo' => $job['company']['image_logo'],
+                        'sort_addresses' => strlen($job['addresses']['sort_addresses']) > 25 ? mb_substr($job['addresses']['sort_addresses'], 0, 25) . '...' : $job['addresses']['sort_addresses'],
+                        'salary_min' => $job['salary']['min'],
+                        'salary_max' => $job['salary']['max'],
+                        'is_salary_visible' => $job['is_salary_visible'],
+                        'published' => $job['published']['since'],
+                        'provicene' => $job['addresses']['address_region_list']
                     ];
-                }
+                });
+                return [
+                    'data' => $filteredData,
+                    'last_page' => $lastPage
+                ];
             }
-
-
 
             $filteredData = $jobs->map(function ($job) {
                 return [
@@ -148,14 +145,8 @@ class JobController extends Controller
 
             // Nếu có người dùng, tiếp tục xử lý lọc theo tiêu chí công việc của người dùng
             $job_criteria = $user->jobCriteria;
-            if ($job_criteria['job_salary'] == null) {
-                return [
-                    'data' => $jobs->values(),
-                    'last_page' => $totalPages
-                ];
-            }
             $jobsArray = $jobs->map(function ($job) use ($job_criteria) {
-                $job['similarity'] = $this->calculateSimilarity($job, $job_criteria);
+                $job['similarity'] = $this->calculateSimilarity($job, $job_criteria, 1);
                 return $job;
             })->sortByDesc('similarity')->values()->toArray();
 
@@ -206,7 +197,7 @@ class JobController extends Controller
         $page = $request->query('page', 1);
         $perPage = 15;
         $skip = ($page - 1) * $perPage;
-        $data = Bookmark::where('user_id', $userId)->skip($skip)->take($perPage)->get(['job_id','type'])->toArray();
+        $data = Bookmark::where('user_id', $userId)->skip($skip)->take($perPage)->get(['job_id', 'type'])->toArray();
         $totalRecords = Bookmark::where('user_id', $userId)->count();
         $totalPages = ceil($totalRecords / $perPage);
         // return count($data);
@@ -238,7 +229,7 @@ class JobController extends Controller
                     Cache::put("job_{$data[$i]['job_id']}", $job, 60);
                 }
                 $jobs[] = $job;
-            }else{
+            } else {
                 $job = Job::find($data[$i]['job_id']);
                 $job->makeHidden(['skills', 'content', 'experience', 'responsibilities', 'requirements', 'job_type_str', 'recruitment_process', 'job_level', 'is_edit', 'is_applied', 'created_at', 'updated_at', 'benefit_id']);
                 $job->is_applied = (bool) $job->is_applied;
@@ -269,7 +260,7 @@ class JobController extends Controller
         return $bookmarkIds;
     }
 
-    private function calculateSimilarity($job, $criteria)
+    private function calculateSimilarity($job, $criteria, $type)
     {
         $score = 0;
 
@@ -281,25 +272,23 @@ class JobController extends Controller
             }
         }
 
-        // So sánh địa điểm công việc
-        $positionsArray = explode(",", $criteria['job_location']);
-        foreach ($positionsArray as $value) {
-            if (strpos($job['addresses']['address_region_list'], $value) !== false) {
-                $score += 3;
+        if ($type == 0) {
+            // So sánh địa điểm công việc
+            $positionsArray = explode(",", $criteria['job_location']);
+            foreach ($positionsArray as $value) {
+                if (strpos($job['addresses']['address_region_list'], $value) !== false) {
+                    $score += 3;
+                }
+            }
+        } else {
+            // So sánh địa điểm công việc
+            $positionsArray = explode(",", $criteria['job_location']);
+            foreach ($positionsArray as $value) {
+                if (strpos($job['sort_addresses'], $value) !== false) {
+                    $score += 3;
+                }
             }
         }
-
-
-        // So sánh mức lương
-        // $salaries = explode(',', $criteria['job_salary']);
-        // $salaryMin = $salaries[0];
-        // $salaryMax = $salaries[1];
-        // foreach ($salaries as $salary) {
-        //     if ($job['salary']['value'] >= $salaryMin && $job['salary']['value'] <= $salaryMax) {
-        //         $score += 1;
-        //         break;
-        //     }
-        // }
 
         return $score;
     }
